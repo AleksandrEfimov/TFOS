@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFOS", "TFOS\TFOS.csproj", "{CBF76AE1-F7FD-4069-86A8-094219F3D1FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CBF76AE1-F7FD-4069-86A8-094219F3D1FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBF76AE1-F7FD-4069-86A8-094219F3D1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBF76AE1-F7FD-4069-86A8-094219F3D1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBF76AE1-F7FD-4069-86A8-094219F3D1FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {529F50B8-879C-48F1-BE3D-5FAC9CDBAB6B}
+	EndGlobalSection
+EndGlobal

@@ -110,7 +110,7 @@ namespace TFOS
 
 
 
-
+        // Проверка наличия стикеров
         private void button2_Click(object sender, EventArgs e)
         {
             IWebDriver driver = new ChromeDriver();

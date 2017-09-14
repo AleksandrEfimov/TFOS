@@ -21,6 +21,8 @@ namespace TFOS
             InitializeComponent();
         }
 
+
+        // Проход по меню админки
         private void button1_Click(object sender, EventArgs e)
         {
             IWebDriver driver = new ChromeDriver();
@@ -54,39 +56,12 @@ namespace TFOS
                 MessageBox.Show("Check the site");
             }
 
-            //int countmenu = driver.FindElements(By.CssSelector("#app- > a")).Count;
-            //MessageBox.Show("Amount menu item: "+countmenu);
-            //IWebElement menu = driver.FindElements(By.CssSelector("#app- > a"));
-
+            
             var menuItem = driver.FindElements(By.CssSelector("#app-"));
             int countMenuItem = menuItem.Count;
 
 
-            //for (int i = 0; i < countMenuItem; i++)
-            //{                
-            //    // refresh
-            //    menuItem = driver.FindElements(By.CssSelector("#app-"));
-
-            //    // проверим есть ли открытые подменю
-            //    var menuSubItem = driver.FindElements(By.CssSelector("ul.docs li"));
-            //    int countMenuSubItem = menuSubItem.Count;
-
-            //    if (countMenuSubItem > 0 )
-            //    {
-            //            for (int j = 0; j < countMenuSubItem; j++)
-            //            {
-            //                // refresh
-            //                menuSubItem = driver.FindElements(By.CssSelector("ul.docs li"));
-            //                menuSubItem[j].Click();
-            //                log += "Меню: " + i + " подменю: " + j+",\n";
-            //            }
-
-            //            continue;
-            //    }
-
-            //    menuItem[i].Click();
-            //    log += "Меню: " + i + ",\n";
-            //}
+           
             int i = -1;
             do
             {
@@ -126,16 +101,15 @@ namespace TFOS
             } while (i < countMenuItem);
 
             MessageBox.Show(log);
-
-            //var menuSubItem = driver.FindElements(By.CssSelector("ul.docs li"));
-            //if (menuSubItem != null)
-            //    MessageBox.Show("Menu Sub Item Count:" + menuSubItem.Count);
-
-
-
+            
             driver.Quit();
             driver = null;
         }
+
+
+
+
+
 
         private void button2_Click(object sender, EventArgs e)
         {

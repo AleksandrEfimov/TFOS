@@ -146,31 +146,7 @@ namespace TFOS
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             driver.Url = "http://localhost:8080/litecart/";
-            // заходим на страничку
-            //driver.Url = "http://localhost:8080/litecart/admin/";
-            //// логин
-            //IWebElement element = wait.Until(d => d.FindElement(By.Name("username")));
-            //driver.FindElement(By.Name("username")).SendKeys("admin");
-            //// пароль
-            ////// в поисках ошибки применён xPath - не помог, но работает.
-            //driver.FindElement(By.XPath("//*[@id=\"box-login\"]/form/div[1]/table/tbody/tr[2]/td[2]/span/input")).SendKeys("admin");
-            ////// данному логину необходим был Клик, в то время как Гугл требовал сабмит
-            //driver.FindElement(By.Name("login")).Click();
-
-
-            //// как критерий входа в админ-панель - виджет статистики интернет-магазина
-            //try
-            //{
-            //    var login = wait.Until(ExpectedConditions.ElementExists(By.Id("widget-stats")));
-            //    //if (login != null)
-            //    //  MessageBox.Show("Login completed");
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Check the site");
-            //}
-
-
+           
             var products = driver.FindElements(By.ClassName("product"));
             //MessageBox.Show("Amount of products: "+ products.Count);
 

@@ -21,17 +21,9 @@ namespace TFOS
             InitializeComponent();
         }
 
-
-        // Проход по меню админки
-        private void button1_Click(object sender, EventArgs e)
+        // логин в админ панель
+        void login(ref IWebDriver driver, ref WebDriverWait wait)
         {
-            IWebDriver driver = new ChromeDriver();
-            WebDriverWait wait;
-            string log = "";
-            // set timeout
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-
-
             // заходим на страничку
             driver.Url = "http://localhost:8080/litecart/admin/";
             // логин
@@ -42,8 +34,16 @@ namespace TFOS
             driver.FindElement(By.XPath("//*[@id=\"box-login\"]/form/div[1]/table/tbody/tr[2]/td[2]/span/input")).SendKeys("admin");
             //// данному логину необходим был Клик, в то время как Гугл требовал сабмит
             driver.FindElement(By.Name("login")).Click();
+        }
 
 
+        // Проход по меню админки
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string log = "";
+            IWebDriver driver = new ChromeDriver();
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            login(ref driver, ref wait);
             // как критерий входа в админ-панель - виджет статистики интернет-магазина
             try
             {
@@ -55,13 +55,10 @@ namespace TFOS
             {
                 MessageBox.Show("Check the site");
             }
-
             
             var menuItem = driver.FindElements(By.CssSelector("#app-"));
             int countMenuItem = menuItem.Count;
-
-
-           
+            
             int i = -1;
             do
             {
@@ -114,21 +111,20 @@ namespace TFOS
         private void button2_Click(object sender, EventArgs e)
         {
             IWebDriver driver = new ChromeDriver();
-            WebDriverWait wait;
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10)); ;
             string log = "";
-            // set timeout
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-
+            
+            // переход к товарам
             driver.Url = "http://localhost:8080/litecart/";
            
+            // находим все товары
             var products = driver.FindElements(By.ClassName("product"));
-            //MessageBox.Show("Amount of products: "+ products.Count);
-
+            
             IWebElement sticker;
             int i = 0;
+
             foreach (var prd in products)
             {
-                
                 try
                 {
                     sticker = prd.FindElement(By.ClassName("sticker"));
@@ -139,16 +135,40 @@ namespace TFOS
                     Console.WriteLine(exception);
                     throw;
                 }
-                
-                
             }
             products[0].Click();
             MessageBox.Show("Amount of stickers: " + i);
-
-
             driver.Close();
             driver.Quit();
             driver = null;
+        }
+
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            IWebDriver driver = new ChromeDriver();
+            WebDriverWait wait = new WebDriverWait( driver, TimeSpan.FromSeconds(10));
+
+
+
+            login(ref driver, ref wait);
+            driver.Url = "http://localhost:8080/litecart/admin/?app=countries&doc=countries";
+
+            IWebElement dataTable = driver.FindElement(By.ClassName("dataTable"));
+
+            IList<IWebElement> trows = dataTable.FindElements(By.TagName("tr"));
+
+            for (int i = 1; i < trows.Count; i++)
+            {
+                IList<IWebElement> checkBox = trows[i].FindElements(By.TagName("td"));
+                // для тестирования прохода по строкам таблицы - прокликаем
+                // checkBox[0].Click();
+            }
+            MessageBox.Show("Прокликано");
+            
+            driver.Close();
+            driver.Quit();
+
         }
     }
 }

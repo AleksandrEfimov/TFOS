@@ -36,6 +36,11 @@ namespace TFOS
             driver.FindElement(By.Name("login")).Click();
         }
 
+        void TableRefrashing()
+        {
+            
+        }
+
 
         // Проход по меню админки
         private void button1_Click(object sender, EventArgs e)
@@ -144,39 +149,86 @@ namespace TFOS
         }
 
 
+
         private void button3_Click(object sender, EventArgs e)
         {
             IWebDriver driver = new ChromeDriver();
             WebDriverWait wait = new WebDriverWait( driver, TimeSpan.FromSeconds(10));
 
+            StringBuilder log = new StringBuilder("");
+            IWebElement dataTable;
+            IList<IWebElement> trows;
 
             // вход в админку
             login(ref driver, ref wait);
             driver.Url = "http://localhost:8080/litecart/admin/?app=countries&doc=countries";
 
-            // таблица со странами
-            IWebElement dataTable = driver.FindElement(By.ClassName("dataTable"));
-            // массив строк
-            IList<IWebElement> trows = dataTable.FindElements(By.TagName("tr"));
 
-
-            for (int i = 1; i < trows.Count-1; i++)
+            void reffunc()
             {
-                //массив ячеек 
-                IList<IWebElement> str_zone1 = trows[i].FindElements(By.TagName("td"));
-                IList<IWebElement> str_zone2 = trows[i+1].FindElements(By.TagName("td"));
+                // таблица со странами
+                dataTable = driver.FindElement(By.ClassName("dataTable"));
+                // массив строк
+                trows = dataTable.FindElements(By.TagName("tr"));
+            }
 
-                if()
+            bool isEnteredzone = false;
 
-                //IList<IWebElement> checkBox = trows[i].FindElements(By.TagName("td"));
+            for (int i = 1; i < trows.Count-2; i++)
+            {
+                if (isEnteredzone)
+                {
+                    //// РЕФАКТОРИНГ!!!
+                    // таблица со странами
+                    dataTable = driver.FindElement(By.ClassName("dataTable"));
+                    // массив строк
+                    trows = dataTable.FindElements(By.TagName("tr"));
+                }
 
-                // для тестирования прохода по строкам таблицы - прокликаем
-                // checkBox[0].Click();
+                //// РЕФАКТОРИНГ!!!
+                //Строки таблицы 
+                IList<IWebElement> zone = trows[i].FindElements(By.TagName("td"));
+                    IList<IWebElement> zoneNext = trows[i+1].FindElements(By.TagName("td"));
+                // значения ячеек - названия стран
+                    string str1 = zone[4].Text;
+                    string str2 = zoneNext[4].Text;
+                // проверяем, что str2 в алфавитном порядке идёт после str1
+                    if (str2.CompareTo(str1) != 1)
+                    MessageBox.Show("Проверяемая строка-"+i+". Ошибка сортировки : "+str1+" и "+str2);
+                // логгируем
+                //  . . .
+
+                                                   // проверка наличия подзон
+                                                //if (zone[5].Text != "0")
+                                                //{
+                                                //    // количество подзон
+                                                //    int AmountOfState = Convert.ToInt16(zone[5].Text);
+
+                                                //    if (AmountOfState > 0)
+                                                //    {
+                                                //        // входи в страну (не война)
+                                                //        zone[4].Click();
+                                                //        //// РЕФАКТОРИНГ!!!
+                                                //        // ищем таблицу
+                                                //        dataTable = driver.FindElement(By.ClassName("dataTable"));
+                                                //        // массив строк
+                                                //        trows = dataTable.FindElements(By.TagName("tr"));
+
+                                                //        for (int j = 1; j < trows.Count; j++)
+                                                //        {
+                                                //             //Строки таблицы 
+                                                //IList<IWebElement> zone = trows[i].FindElements(By.TagName("td"));
+                                                //    IList<IWebElement> zoneNext = trows[i+1].FindElements(By.TagName("td"));
+
+                                                //        }
+                                                //        isEnteredzone = true;
+                                                //    }
+                                                //}
 
 
             }
-            MessageBox.Show("Прокликано");
-            
+        MessageBox.Show("Парам-парам-пам, ВСЁ!");
+
             driver.Close();
             driver.Quit();
 

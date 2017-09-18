@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-
+using System.Collections;
 
 namespace TFOS
 {
@@ -150,24 +150,51 @@ namespace TFOS
             WebDriverWait wait = new WebDriverWait( driver, TimeSpan.FromSeconds(10));
 
 
-
+            // вход в админку
             login(ref driver, ref wait);
             driver.Url = "http://localhost:8080/litecart/admin/?app=countries&doc=countries";
 
+            // таблица со странами
             IWebElement dataTable = driver.FindElement(By.ClassName("dataTable"));
-
+            // массив строк
             IList<IWebElement> trows = dataTable.FindElements(By.TagName("tr"));
 
-            for (int i = 1; i < trows.Count; i++)
+
+            for (int i = 1; i < trows.Count-1; i++)
             {
-                IList<IWebElement> checkBox = trows[i].FindElements(By.TagName("td"));
+                //массив ячеек 
+                IList<IWebElement> str_zone1 = trows[i].FindElements(By.TagName("td"));
+                IList<IWebElement> str_zone2 = trows[i+1].FindElements(By.TagName("td"));
+
+                if()
+
+                //IList<IWebElement> checkBox = trows[i].FindElements(By.TagName("td"));
+
                 // для тестирования прохода по строкам таблицы - прокликаем
                 // checkBox[0].Click();
+
+
             }
             MessageBox.Show("Прокликано");
             
             driver.Close();
             driver.Quit();
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string []str = { "Afghanistan", "Algeria", "Albania" };
+            //bool bl = "A" + "b";
+
+            MessageBox.Show("сравнение : "+(str[0].CompareTo(str[1])) );
+
+           // str.Sort();
+
+            MessageBox.Show("Алб > Aфг ? : " + str[1].Equals(str[0]));
+
+            str = null;
+
 
         }
     }

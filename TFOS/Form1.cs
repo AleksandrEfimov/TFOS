@@ -16,6 +16,7 @@ namespace TFOS
 {
     public partial class Form1 : Form
     {
+
         public Form1()
         {
             InitializeComponent();
@@ -157,12 +158,8 @@ namespace TFOS
 
             StringBuilder log = new StringBuilder("");
             IWebElement dataTable;
-            IList<IWebElement> trows;
-
-            // вход в админку
-            login(ref driver, ref wait);
-            driver.Url = "http://localhost:8080/litecart/admin/?app=countries&doc=countries";
-
+            IList<IWebElement> trows, zone, zoneNext;
+            
 
             void reffunc()
             {
@@ -172,23 +169,30 @@ namespace TFOS
                 trows = dataTable.FindElements(By.TagName("tr"));
             }
 
+
+            // вход в админку
+            login(ref driver, ref wait);
+            driver.Url = "http://localhost:8080/litecart/admin/?app=countries&doc=countries";
+
+            reffunc();
+            
             bool isEnteredzone = false;
 
+            // TODO: сделать функцию перебора и сравнения строк в таблице
+            // void reSorting()
+            // 
+            //
             for (int i = 1; i < trows.Count-2; i++)
             {
                 if (isEnteredzone)
                 {
-                    //// РЕФАКТОРИНГ!!!
-                    // таблица со странами
-                    dataTable = driver.FindElement(By.ClassName("dataTable"));
-                    // массив строк
-                    trows = dataTable.FindElements(By.TagName("tr"));
+                    reffunc();
                 }
 
                 //// РЕФАКТОРИНГ!!!
-                //Строки таблицы 
-                IList<IWebElement> zone = trows[i].FindElements(By.TagName("td"));
-                    IList<IWebElement> zoneNext = trows[i+1].FindElements(By.TagName("td"));
+                //  Строки таблицы 
+                zone = trows[i].FindElements(By.TagName("td"));
+                zoneNext = trows[i+1].FindElements(By.TagName("td"));
                 // значения ячеек - названия стран
                     string str1 = zone[4].Text;
                     string str2 = zoneNext[4].Text;

@@ -96,7 +96,7 @@ namespace TFOS
                             continue;
                         }
                     }
-                if (++i < countMenuItem-1 )
+                if (i < countMenuItem-1 )
                 {
                     menuItem[++i].Click();
                 }
@@ -106,7 +106,7 @@ namespace TFOS
             } while (i < countMenuItem);
 
             MessageBox.Show(log);
-            
+            driver.Close();
             driver.Quit();
             driver = null;
         }
@@ -128,15 +128,18 @@ namespace TFOS
             // находим все товары
             var products = driver.FindElements(By.ClassName("product"));
             
-            IWebElement sticker;
-            int i = 0;
+            IList<IWebElement> stickers;
+            int i = 1;
+            
 
             foreach (var prd in products)
             {
                 try
                 {
-                    sticker = prd.FindElement(By.ClassName("sticker"));
-                    i++;
+                    stickers = prd.FindElements(By.ClassName("sticker"));
+                    if (i < stickers.Count)
+                        i = stickers.Count;
+
                 }
                 catch (Exception exception)
                 {
@@ -145,15 +148,15 @@ namespace TFOS
                 }
             }
             products[0].Click();
-            MessageBox.Show("Amount of stickers: " + i);
+            if(i>1)
+            MessageBox.Show("Amount of stickers is more than 1: " + i);
             driver.Close();
             driver.Quit();
             driver = null;
         }
 
 
-        // TODO: сделать функцию перебора и сравнения строк в таблице
-        // MADE: сделаны функции обновления контекста: таблица и строки
+        // ЗАДАНИЕ 9-1 Проверка сортировки стран - zone  и их областей - subone
         private void button3_Click(object sender, EventArgs e)
         {
 
@@ -197,11 +200,8 @@ namespace TFOS
                     {
                         log.AppendLine(i + "-й шаг, страны: " + str1 + " " + str2 + "; ");
                     }
-
-
                     // для отображения прохождения по всем строкам
                     zone[0].Click();
-
 
                     // проверка наличия подзон, вход, сравнение
                     if (zone[5].Text != "0")
@@ -211,7 +211,6 @@ namespace TFOS
 
                         if (AmountOfState > 0)
                         {
-
                             // входим в страну (не война)
                             try
                             {
@@ -227,7 +226,6 @@ namespace TFOS
                                 MessageBox.Show("Проблема с переходом к подзонам" + ex.ToString());
                             }
 
-
                             // сравнение подзон
                             for (int j = 1; j < trows.Count - 2; j++)
                             {
@@ -238,14 +236,13 @@ namespace TFOS
                                 str1 = zone[2].Text;
                                 str2 = zoneNext[2].Text;
                                 // проверяем, что str2 в алфавитном порядке идёт после str1
-                                if (str2.CompareTo(str1) != 1)
+                                if (str2.CompareTo(str1) >0)
                                     MessageBox.Show("Проверяемая строка-" + j + "  " + str1 + " и " + str2);
                                 else
                                 {
                                     log.AppendLine(i + "." + j + " шаг, территории: " + str1 + " " + str2 + "; ");
                                 }
                             }
-
                             // меняем флаг захода в подменю
                             isEnteredzone = true;
                             var menuItem = driver.FindElements(By.Id("app-"));
@@ -255,9 +252,7 @@ namespace TFOS
                     }
                     // вернулись в country - треба обновить строки.
                     newContext();
-
                 }
-
             }
             
             // войти в админку
@@ -267,7 +262,6 @@ namespace TFOS
             driver.Url = "http://localhost:8080/litecart/admin/?app=countries&doc=countries";
             // обновить контекст
             newContext();
-            
 
             try
             {
@@ -285,21 +279,68 @@ namespace TFOS
 
 
 
-
+        // ЗАДАНИЕ 9-2
         private void button4_Click(object sender, EventArgs e)
         {
-            string []str = { "Afghanistan", "Algeria", "Albania" };
-            //bool bl = "A" + "b";
+            IWebDriver driver = new ChromeDriver();
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            logInAdmin(ref driver, ref wait);
 
-            MessageBox.Show("сравнение : "+(str[0].CompareTo(str[1])) );
+            IWebElement dataTable, zonelink;
+            IList<IWebElement> zone, zoneNext,zone1,zoneNext1,  trows;
+            string valueZone1, valueZone2;
+            
+            void newContext()
+            {
+                driver.Url = "http://localhost:8080/litecart/admin/?app=geo_zones&doc=geo_zones";
+                dataTable = driver.FindElement(By.ClassName("dataTable"));
+                trows = dataTable.FindElements(By.TagName("tr"));
+            }
 
-           // str.Sort();
 
-            MessageBox.Show("Алб > Aфг ? : " + str[1].Equals(str[0]));
+            newContext();
 
-            str = null;
+            for (int j = 1; j<trows.Count-1; j++)
+            {
+                
+                zone = trows[j].FindElements(By.TagName("td"));
+                zonelink = zone[2].FindElement(By.TagName("a"));
+
+                // входим в страну,
+                zonelink.Click();
+                
+                // таблица subzone
+                dataTable = driver.FindElement(By.Id("table-zones"));
+                trows = dataTable.FindElements(By.TagName("tr"));
+
+                // получаем и сравниваем значения 2х соседних subzone
+                for (int i = 1; i < trows.Count - 2; i++)
+                {
+                    //получаем массив ячеек
+                    
+                    zone1 = trows[i].FindElements(By.TagName("td"));
+                    zoneNext1 = trows[i + 1].FindElements(By.TagName("td"));
+
+                    // 2я(3я) ячейка содержит выпадающий список
+
+                    valueZone1 = zone1[2].FindElement(By.CssSelector("select option[selected = selected]")).GetAttribute("innerHTML");
+                    valueZone2 = zoneNext1[2].FindElement(By.CssSelector("select option[selected = selected]")).GetAttribute("innerHTML");
+                    if (valueZone2.CompareTo(valueZone1) > 0)
+                        MessageBox.Show("Проверяемая строка-" + j + "  " + valueZone1 + " и " + valueZone2);
+                    else
+                    {
+                        MessageBox.Show("Ашипка-ашипка!! 1я зона:"+valueZone1+" 2я зона:"+valueZone2+ "valueZone2.CompareTo(valueZone1)"+ valueZone2.CompareTo(valueZone1));
+                    }
+
+                }
+                //переход на предидущую страницу
+                newContext();
+
+            }
 
 
+        driver.Close();
+        driver.Quit();
         }
     }
 }

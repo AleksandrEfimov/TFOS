@@ -37,10 +37,7 @@ namespace TFOS
             driver.FindElement(By.Name("login")).Click();
         }
 
-        void TableRefrashing()
-        {
-            
-        }
+        
 
 
         // Проход по меню админки
@@ -49,6 +46,7 @@ namespace TFOS
             string log = "";
             IWebDriver driver = new ChromeDriver();
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
             logInAdmin(ref driver, ref wait);
             // как критерий входа в админ-панель - виджет статистики интернет-магазина
             try
@@ -118,41 +116,11 @@ namespace TFOS
         // Проверка наличия стикеров
         private void button2_Click(object sender, EventArgs e)
         {
-            IWebDriver driver = new ChromeDriver();
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10)); ;
-            string log = "";
-            
             // переход к товарам
-            driver.Url = "http://localhost:8080/litecart/";
-           
-            // находим все товары
-            var products = driver.FindElements(By.ClassName("product"));
-            
-            IList<IWebElement> stickers;
-            int i = 1;
-            
+            MenuChecking MCheck = new MenuChecking("http://localhost:8080/litecart/");
+            MCheck.FindAllProducts();
+            MCheck.webBrCl.Close();
 
-            foreach (var prd in products)
-            {
-                try
-                {
-                    stickers = prd.FindElements(By.ClassName("sticker"));
-                    if (i < stickers.Count)
-                        i = stickers.Count;
-
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
-                    throw;
-                }
-            }
-            products[0].Click();
-            if(i>1)
-            MessageBox.Show("Amount of stickers is more than 1: " + i);
-            driver.Close();
-            driver.Quit();
-            driver = null;
         }
 
 

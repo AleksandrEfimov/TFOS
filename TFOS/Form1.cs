@@ -45,7 +45,8 @@ namespace TFOS
         {
             string log = "";
             IWebDriver driver = new ChromeDriver();
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            
 
             logInAdmin(ref driver, ref wait);
             // как критерий входа в админ-панель - виджет статистики интернет-магазина
@@ -80,6 +81,7 @@ namespace TFOS
                         {
                             // refresh
                             menuSubItem = driver.FindElements(By.CssSelector("ul.docs li"));
+                            
                             menuSubItem[j].Click();
                             log += "Меню: " + i + " подменю: " + j + ",\n";
                         }
@@ -94,6 +96,7 @@ namespace TFOS
                             continue;
                         }
                     }
+
                 if (i < countMenuItem-1 )
                 {
                     menuItem[++i].Click();

@@ -296,14 +296,21 @@ namespace TFOS
 
                     valueZone1 = zone1[2].FindElement(By.CssSelector("select option[selected = selected]")).GetAttribute("innerHTML");
                     valueZone2 = zoneNext1[2].FindElement(By.CssSelector("select option[selected = selected]")).GetAttribute("innerHTML");
-                    if (valueZone2.CompareTo(valueZone1) > 0)
-                        MessageBox.Show("Проверяемая строка-" + j + "  " + valueZone1 + " и " + valueZone2);
-                    else
-                    {
-                        MessageBox.Show("Ашипка-ашипка!! 1я зона:"+valueZone1+" 2я зона:"+valueZone2+ "valueZone2.CompareTo(valueZone1)"+ valueZone2.CompareTo(valueZone1));
-                    }
 
-                }
+                    if (valueZone2.CompareTo(valueZone1) < 0)
+                        MessageBox.Show("Обнаружена ошибка в сортировке. Подробнее:/n" 
+                                                        + valueZone1 + "и" + valueZone2);
+
+
+
+                    //if (valueZone2.CompareTo(valueZone1) > 0)
+                    //    MessageBox.Show("Проверяемая строка-" + j + "  " + valueZone1 + " и " + valueZone2);
+                    //else
+                    //{
+                    //    MessageBox.Show("Ашипка-ашипка!! 1я зона:"+valueZone1+" 2я зона:"+valueZone2+ "valueZone2.CompareTo(valueZone1)"+ valueZone2.CompareTo(valueZone1));
+                    //}
+
+                } 
                 //переход на предидущую страницу
                 newContext();
 

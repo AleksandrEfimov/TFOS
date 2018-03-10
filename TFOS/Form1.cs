@@ -23,19 +23,19 @@ namespace TFOS
         }
 
         // логин в админ панель
-        void logInAdmin(ref IWebDriver driver, ref WebDriverWait wait)
-        {
-            // заходим на страничку
-            driver.Url = "http://localhost:8080/litecart/admin/";
-            // логин
-            IWebElement element = wait.Until(d => d.FindElement(By.Name("username")));
-            driver.FindElement(By.Name("username")).SendKeys("admin");
-            // пароль
-            //// в поисках ошибки применён xPath - не помог, но работает.
-            driver.FindElement(By.XPath("//*[@id=\"box-login\"]/form/div[1]/table/tbody/tr[2]/td[2]/span/input")).SendKeys("admin");
-            //// данному логину необходим был Клик, в то время как Гугл требовал сабмит
-            driver.FindElement(By.Name("login")).Click();
-        }
+        //void logInAdmin(ref IWebDriver driver, ref WebDriverWait wait)
+        //{
+        //    // заходим на страничку
+        //    driver.Url = "http://localhost:8080/litecart/admin/";
+        //    // логин
+        //    IWebElement element = wait.Until(d => d.FindElement(By.Name("username")));
+        //    driver.FindElement(By.Name("username")).SendKeys("admin");
+        //    // пароль
+        //    //// в поисках ошибки применён xPath - не помог, но работает.
+        //    driver.FindElement(By.XPath("//*[@id=\"box-login\"]/form/div[1]/table/tbody/tr[2]/td[2]/span/input")).SendKeys("admin");
+        //    //// данному логину необходим был Клик, в то время как Гугл требовал сабмит
+        //    driver.FindElement(By.Name("login")).Click();
+        //}
 
         
 
@@ -43,73 +43,10 @@ namespace TFOS
         // Проход по меню админки
         private void button1_Click(object sender, EventArgs e)
         {
-            string log = "";
-            IWebDriver driver = new ChromeDriver();
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-            
+            CheckingAdminMenu ChAdmMenu = new CheckingAdminMenu("http://localhost:8080/litecart/");
+            ChAdmMenu.CheckMenu();
+            ChAdmMenu.webBrCl.Close();
 
-            logInAdmin(ref driver, ref wait);
-            // как критерий входа в админ-панель - виджет статистики интернет-магазина
-            try
-            {
-                var login = wait.Until(ExpectedConditions.ElementExists(By.Id("widget-stats")));
-                //if (login != null)
-                  //  MessageBox.Show("Login completed");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Check the site");
-            }
-            
-            var menuItem = driver.FindElements(By.CssSelector("#app-"));
-            int countMenuItem = menuItem.Count;
-            
-            int i = -1;
-            do
-            {
-                
-                //refresh
-                menuItem = driver.FindElements(By.CssSelector("#app-"));
-
-                    // проверим есть ли открытые подменю
-                    var menuSubItem = driver.FindElements(By.CssSelector("ul.docs li"));
-                    int countMenuSubItem = menuSubItem.Count;
-
-                    if (countMenuSubItem > 0)
-                    {
-                        for (int j = 0; j < countMenuSubItem; j++)
-                        {
-                            // refresh
-                            menuSubItem = driver.FindElements(By.CssSelector("ul.docs li"));
-                            
-                            menuSubItem[j].Click();
-                            log += "Меню: " + i + " подменю: " + j + ",\n";
-                        }
-
-                        // готовим переход к следующему пункту меню
-                        i++;
-                    //refresh
-                        if (i < countMenuItem)
-                        {
-                            menuItem = driver.FindElements(By.CssSelector("#app-"));
-                            menuItem[i].Click();
-                            continue;
-                        }
-                    }
-
-                if (i < countMenuItem-1 )
-                {
-                    menuItem[++i].Click();
-                }
-
-                log += "Меню: " + i + ",\n";
-
-            } while (i < countMenuItem);
-
-            MessageBox.Show(log);
-            driver.Close();
-            driver.Quit();
-            driver = null;
         }
 
 
@@ -120,9 +57,9 @@ namespace TFOS
         private void button2_Click(object sender, EventArgs e)
         {
             // переход к товарам
-            MenuChecking MCheck = new MenuChecking("http://localhost:8080/litecart/");
-            MCheck.FindAllProducts();
-            MCheck.webBrCl.Close();
+            CheckingStickers SCheck = new CheckingStickers("http://localhost:8080/litecart/");
+            SCheck.FindAllProducts();
+            SCheck.webBrCl.Close();
 
         }
 
@@ -227,7 +164,7 @@ namespace TFOS
             }
             
             // войти в админку
-            logInAdmin(ref driver, ref wait);
+            // !!! logInAdmin(ref driver, ref wait);
 
             // перейти на адрес
             driver.Url = "http://localhost:8080/litecart/admin/?app=countries&doc=countries";
@@ -255,7 +192,7 @@ namespace TFOS
         {
             IWebDriver driver = new ChromeDriver();
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            logInAdmin(ref driver, ref wait);
+            /// !!! logInAdmin(ref driver, ref wait);
 
             IWebElement dataTable, zonelink;
             IList<IWebElement> zone, zoneNext,zone1,zoneNext1,  trows;

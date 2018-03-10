@@ -8,20 +8,30 @@ using OpenQA.Selenium.Support;
 using OpenQA.Selenium.Chrome;
 using System.Collections;
 using OpenQA.Selenium.Support.UI;
-
+using System.Windows.Forms;
 
 namespace TFOS
 {
     public class WebBrowserClient
     {
-        public IWebDriver driver;
+        protected internal IWebDriver driver;
+
+        int delay = 10;
+        WebDriverWait wait;
 
         public WebBrowserClient()
         {
-            this.driver = new ChromeDriver();
-            WebDriverWait wait = new WebDriverWait(this.driver, TimeSpan.FromSeconds(10));
-            this.driver.Url = "ccc";
+            driver = new ChromeDriver();
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(delay));
+            driver.Url = "ccc";
 
+        }
+
+        public WebBrowserClient(int delay)
+        {
+            driver = new ChromeDriver();
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(delay));
+            driver.Url = "ccc";
         }
 
 
@@ -31,26 +41,35 @@ namespace TFOS
         }
 
         // логин в админ панель
-        public void logInAdmin(ref IWebDriver driver, ref WebDriverWait wait)
+        public void logInAdmin()
         {
-            // заходим на страничку
-            driver.Url = "http://localhost:8080/litecart/admin/";
-            // логин
-            IWebElement element = wait.Until(d => d.FindElement(By.Name("username")));
-            driver.FindElement(By.Name("username")).SendKeys("admin");
-            // пароль
-            //// в поисках ошибки применён xPath - не помог, но работает.
-            driver.FindElement(By.XPath("//*[@id=\"box-login\"]/form/div[1]/table/tbody/tr[2]/td[2]/span/input")).SendKeys("admin");
-            //// данному логину необходим был Клик, в то время как Гугл требовал сабмит
-            driver.FindElement(By.Name("login")).Click();
+            try
+            {
+                // заходим на страничку
+                driver.Url = "http://localhost:8080/litecart/admin/";
+                // логин
+                IWebElement element = wait.Until(d => d.FindElement(By.Name("username")));
+                driver.FindElement(By.Name("username")).SendKeys("admin");
+                // пароль
+                //// в поисках ошибки применён xPath - не помог, но работает.
+                driver.FindElement(By.XPath("//*[@id=\"box-login\"]/form/div[1]/table/tbody/tr[2]/td[2]/span/input")).SendKeys("admin");
+                //// данному логину необходим был Клик, в то время как Гугл требовал сабмит
+                driver.FindElement(By.Name("login")).Click();
+
+                var login = wait.Until(ExpectedConditions.ElementExists(By.Id("widget-stats")));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Check the site. Admin.");
+            }
         }
 
 
         public void Close()
         {
-            this.driver.Close();
-            this.driver.Quit();
-            this.driver = null;
+            driver.Close();
+            driver.Quit();
+            driver = null;
         }
 
     }

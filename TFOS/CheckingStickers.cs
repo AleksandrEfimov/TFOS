@@ -11,30 +11,20 @@ using OpenQA.Selenium.Support.UI;
 
 namespace TFOS
 {
-    class MenuChecking 
+    class CheckingStickers 
     {
         // private?
         public WebBrowserClient webBrCl = new WebBrowserClient();
         
 
-        public MenuChecking(string str)
+        public CheckingStickers(string str)
         {
             this.webBrCl.SetUrl(str);
         }
-
-        
-
-        //IWebDriver driver = new ChromeDriver();
-        //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10)); ;
-
-        // переход к товарам
-        //webBrCl.SetUrl("http://localhost:8080/litecart/");
            
         // находим все товары
         public void FindAllProducts()
         {
-
-
             var products = webBrCl.driver.FindElements(By.ClassName("product"));
 
             IList<IWebElement> stickers;
@@ -62,7 +52,7 @@ namespace TFOS
 
         }
 
-        ~MenuChecking()
+        ~CheckingStickers()
         {
             webBrCl.Close();
         }

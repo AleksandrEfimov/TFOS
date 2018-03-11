@@ -13,10 +13,7 @@ namespace TFOS
 {
     class CheckingAdminMenu
     {
-
-        //static WebBrowserClient webBrCl;
-        //IWebDriver driver = webBrCl.drive;
-
+        
         public WebBrowserClient webBrCl;
         IWebDriver driver;
 
@@ -73,7 +70,6 @@ namespace TFOS
         }
         ~CheckingAdminMenu()
         {
-            webBrCl.Close();
         }
     }
 }   

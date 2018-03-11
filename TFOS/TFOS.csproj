@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckingAdminMenu.cs" />
+    <Compile Include="ChkngCntrySorting .cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

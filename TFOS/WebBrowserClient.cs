@@ -60,7 +60,7 @@ namespace TFOS
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Check the site. Admin.");
+                MessageBox.Show("Check the site. Admin."+ex);
             }
         }
 

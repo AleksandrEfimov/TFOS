@@ -46,13 +46,8 @@ namespace TFOS
             CheckingAdminMenu ChAdmMenu = new CheckingAdminMenu("http://localhost:8080/litecart/");
             ChAdmMenu.CheckMenu();
             ChAdmMenu.webBrCl.Close();
-
         }
-
-
-
-
-
+        
         // Проверка наличия стикеров
         private void button2_Click(object sender, EventArgs e)
         {
@@ -67,135 +62,22 @@ namespace TFOS
         // ЗАДАНИЕ 9-1 Проверка сортировки стран - zone  и их областей - subone
         private void button3_Click(object sender, EventArgs e)
         {
-
-            IWebDriver driver = new ChromeDriver();
-            WebDriverWait wait = new WebDriverWait( driver, TimeSpan.FromSeconds(10));
-
-            StringBuilder log = new StringBuilder("");
-            IWebElement dataTable;
-            IList<IWebElement> trows, zone, zoneNext;
-            bool isEnteredzone = false;
-
-            // функция обновления контекста - описание
-            void newContext()
-            {
-                // таблица со странами
-                dataTable = driver.FindElement(By.ClassName("dataTable"));
-                // массив строк
-                trows = dataTable.FindElements(By.TagName("tr"));
-            }
-            // функция проверки сортивки стран и подзон по алфавиту - описание
-            void reSorting(ref IList<IWebElement> tRowSort)
-            {
-                for (int i = 1; i < tRowSort.Count - 2; i++)
-                {
-                    if (isEnteredzone)
-                    {
-                        newContext();
-                    }
-
-
-                    //  Строки таблицы 
-                    zone = trows[i].FindElements(By.TagName("td"));
-                    zoneNext = trows[i + 1].FindElements(By.TagName("td"));
-                    // значения ячеек - названия стран
-                    string str1 = zone[4].Text;
-                    string str2 = zoneNext[4].Text;
-                    // проверяем, что str2 в алфавитном порядке идёт после str1
-                    if (str2.CompareTo(str1) != 1)
-                        MessageBox.Show("Проверяемая строка-" + i + ". Ошибка сортировки : " + str1 + " и " + str2);
-                    else
-                    {
-                        log.AppendLine(i + "-й шаг, страны: " + str1 + " " + str2 + "; ");
-                    }
-                    // для отображения прохождения по всем строкам
-                    zone[0].Click();
-
-                    // проверка наличия подзон, вход, сравнение
-                    if (zone[5].Text != "0")
-                    {
-                        // количество подзон
-                        int AmountOfState = Convert.ToInt16(zone[5].Text);
-
-                        if (AmountOfState > 0)
-                        {
-                            // входим в страну (не война)
-                            try
-                            {
-                                var refCountry = zone[4].FindElement(By.TagName("a"));
-                                MessageBox.Show("Переход к " + zone[4].Text);
-                                // переход к подзонам
-                                refCountry.Click();
-                                // обновление таблицы
-                                newContext();
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show("Проблема с переходом к подзонам" + ex.ToString());
-                            }
-
-                            // сравнение подзон
-                            for (int j = 1; j < trows.Count - 2; j++)
-                            {
-                                //Строки таблицы 
-                                zone = trows[j].FindElements(By.TagName("td"));
-                                zoneNext = trows[j + 1].FindElements(By.TagName("td"));
-                                // значения ячеек - названия стран
-                                str1 = zone[2].Text;
-                                str2 = zoneNext[2].Text;
-                                // проверяем, что str2 в алфавитном порядке идёт после str1
-                                if (str2.CompareTo(str1) >0)
-                                    MessageBox.Show("Проверяемая строка-" + j + "  " + str1 + " и " + str2);
-                                else
-                                {
-                                    log.AppendLine(i + "." + j + " шаг, территории: " + str1 + " " + str2 + "; ");
-                                }
-                            }
-                            // меняем флаг захода в подменю
-                            isEnteredzone = true;
-                            var menuItem = driver.FindElements(By.Id("app-"));
-                            menuItem[2].Click();
-                        }
-
-                    }
-                    // вернулись в country - треба обновить строки.
-                    newContext();
-                }
-            }
-            
-            // войти в админку
-            // !!! logInAdmin(ref driver, ref wait);
-
-            // перейти на адрес
-            driver.Url = "http://localhost:8080/litecart/admin/?app=countries&doc=countries";
-            // обновить контекст
-            newContext();
-
-            try
-            {
-                reSorting(ref trows);
-                MessageBox.Show("Парам-парам-пам, ВСЁ!");
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.ToString());
-            }
-
-            driver.Close();
-            driver.Quit();
+            ChkngCntrySorting allcountry = new ChkngCntrySorting("http://localhost:8080/litecart/admin/?app=countries&doc=countries");
+            allcountry.CheckSort();
+            allcountry.webBrCl.Close();
         }
-
-
-
+        
         // ЗАДАНИЕ 9-2
         private void button4_Click(object sender, EventArgs e)
         {
+
+
             IWebDriver driver = new ChromeDriver();
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
             /// !!! logInAdmin(ref driver, ref wait);
 
             IWebElement dataTable, zonelink;
-            IList<IWebElement> zone, zoneNext,zone1,zoneNext1,  trows;
+            IList<IWebElement> zone, zone1, zoneNext1,  trows; // zoneNext
             string valueZone1, valueZone2;
             
             void newContext()

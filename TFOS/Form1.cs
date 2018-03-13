@@ -63,81 +63,17 @@ namespace TFOS
         private void button3_Click(object sender, EventArgs e)
         {
             ChkngCntrySorting allcountry = new ChkngCntrySorting("http://localhost:8080/litecart/admin/?app=countries&doc=countries");
-            allcountry.CheckSort();
+            allcountry.CheckSortCountry();
             allcountry.webBrCl.Close();
         }
         
-        // ЗАДАНИЕ 9-2
+        // ЗАДАНИЕ 9-2 Проверка сортировки геозон
         private void button4_Click(object sender, EventArgs e)
         {
-
-
-            IWebDriver driver = new ChromeDriver();
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            /// !!! logInAdmin(ref driver, ref wait);
-
-            IWebElement dataTable, zonelink;
-            IList<IWebElement> zone, zone1, zoneNext1,  trows; // zoneNext
-            string valueZone1, valueZone2;
+            ChkngCntrySorting allcountry = new ChkngCntrySorting("http://localhost:8080/litecart/admin/?app=geo_zones&doc=geo_zones");
+            allcountry.CheckSortGeofence();
+            allcountry.webBrCl.Close();
             
-            void newContext()
-            {
-                driver.Url = "http://localhost:8080/litecart/admin/?app=geo_zones&doc=geo_zones";
-                dataTable = driver.FindElement(By.ClassName("dataTable"));
-                trows = dataTable.FindElements(By.TagName("tr"));
-            }
-
-
-            newContext();
-
-            for (int j = 1; j<trows.Count-1; j++)
-            {
-                
-                zone = trows[j].FindElements(By.TagName("td"));
-                zonelink = zone[2].FindElement(By.TagName("a"));
-
-                // входим в страну,
-                zonelink.Click();
-                
-                // таблица subzone
-                dataTable = driver.FindElement(By.Id("table-zones"));
-                trows = dataTable.FindElements(By.TagName("tr"));
-
-                // получаем и сравниваем значения 2х соседних subzone
-                for (int i = 1; i < trows.Count - 2; i++)
-                {
-                    //получаем массив ячеек
-                    
-                    zone1 = trows[i].FindElements(By.TagName("td"));
-                    zoneNext1 = trows[i + 1].FindElements(By.TagName("td"));
-
-                    // 2я(3я) ячейка содержит выпадающий список
-
-                    valueZone1 = zone1[2].FindElement(By.CssSelector("select option[selected = selected]")).GetAttribute("innerHTML");
-                    valueZone2 = zoneNext1[2].FindElement(By.CssSelector("select option[selected = selected]")).GetAttribute("innerHTML");
-
-                    if (valueZone2.CompareTo(valueZone1) < 0)
-                        MessageBox.Show("Обнаружена ошибка в сортировке. Подробнее:/n" 
-                                                        + valueZone1 + "и" + valueZone2);
-
-
-
-                    //if (valueZone2.CompareTo(valueZone1) > 0)
-                    //    MessageBox.Show("Проверяемая строка-" + j + "  " + valueZone1 + " и " + valueZone2);
-                    //else
-                    //{
-                    //    MessageBox.Show("Ашипка-ашипка!! 1я зона:"+valueZone1+" 2я зона:"+valueZone2+ "valueZone2.CompareTo(valueZone1)"+ valueZone2.CompareTo(valueZone1));
-                    //}
-
-                } 
-                //переход на предидущую страницу
-                newContext();
-
-            }
-
-
-        driver.Close();
-        driver.Quit();
         }
     }
 }

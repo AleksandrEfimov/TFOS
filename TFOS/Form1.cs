@@ -75,5 +75,11 @@ namespace TFOS
             allcountry.webBrCl.Close();
             
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            AttributeComparison attrCompr = new AttributeComparison("http://localhost:8080/litecart/en/");
+
+        }
     }
 }

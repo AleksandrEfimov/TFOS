@@ -11,27 +11,21 @@ namespace TFOS
 
         public struct Properties
         {
-            string Name { get; set; }
+            public string Name { get; set; }
+            public string Link { get; set; }
             
-            struct RegularPrice
-            {
-                private float Price { get; set; }
-                private int[] ColorRGB;
-                private string FontSize;
-                private bool striked;
+            public float RegularPrice { get; set; }
+            public int[] RegularColorRGB;
+            public string RegularFontSize;
+            public bool RegularStriked;
 
-            };
-
-            struct CampainPrice
-            {
-                private float Price { get; set; }
-                private int[] ColorRGB;
-                private string FontSize;
-            }
             
-
-
+            
+            public float ActionPrice { get; set ; }
+            public int[] ActionColorRGB;
+            public string ActionFontSize;
         }
+        public Products() { }
 
 
         }

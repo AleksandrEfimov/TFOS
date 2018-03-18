@@ -16,8 +16,6 @@ namespace TFOS
         
         public WebBrowserClient webBrCl;
         IWebDriver driver;
-
-
         string SetUrl { get;set; }
 
         public CheckingAdminMenu(string seturl)

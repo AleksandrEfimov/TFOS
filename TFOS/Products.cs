@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenQA.Selenium.Support;
+
 
 namespace TFOS
 {
@@ -27,6 +29,16 @@ namespace TFOS
         }
         public Products() { }
 
+        public int[] ParsingRGB(string str)
+        {
+            Color = 
+            int[] Arr = new int[3];
+            string[] stAr = str.Split(',');            
+            foreach i in stAr
+
+
+            return Arr;
+        }
 
         }
     }

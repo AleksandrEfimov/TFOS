@@ -50,7 +50,8 @@ namespace TFOS
                 Name = data[0].FindElement(By.CssSelector(".name")).GetAttribute("InnerHTML"),
                 Link = data[0].FindElement(By.CssSelector(".link")).GetAttribute("href"),
                 RegularPrice = (float)Convert.ToDouble(data[0].FindElement(By.CssSelector(".regular-price")).GetAttribute("InnerHTML")),
-                RegularColorRGB = data[0].FindElement(By.CssSelector("")).GetAttribute(""),
+
+                RegularColorRGB = int.Parse(data[0].FindElement(By.CssSelector(".regular-price")).GetCssValue("color")),
                 RegularFontSize = data[0].FindElement(By.CssSelector("")).GetAttribute(""),
                 RegularStriked = data[0].FindElement(By.CssSelector("")).GetAttribute(""),
 

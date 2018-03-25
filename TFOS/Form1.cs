@@ -78,8 +78,11 @@ namespace TFOS
 
         private void button5_Click(object sender, EventArgs e)
         {
-            AttributeComparison attrCompr = new AttributeComparison("http://localhost:8080/litecart/en/");
 
+            AttributeComparison attrCompr = new AttributeComparison();
+            Products.Properties prop = attrCompr.GetProperties("http://localhost:8080/litecart/en/");
+            MessageBox.Show(prop.ToString() ) ;
+            
         }
     }
 }

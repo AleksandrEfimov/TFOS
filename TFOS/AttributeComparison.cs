@@ -37,10 +37,9 @@ namespace TFOS
         public void InitProd(int i, Properties prop )
         {
             Prod[i] = new Products();
-
         }
 
-        public void GetProperties(string seturl)
+        public Properties GetProperties(string seturl)
         {
             driver.Url = seturl;
             var data = driver.FindElements(By.CssSelector("#box-campaigns li"));
@@ -49,18 +48,18 @@ namespace TFOS
             {
                 Name = data[0].FindElement(By.CssSelector(".name")).GetAttribute("InnerHTML"),
                 Link = data[0].FindElement(By.CssSelector(".link")).GetAttribute("href"),
+
                 RegularPrice = (float)Convert.ToDouble(data[0].FindElement(By.CssSelector(".regular-price")).GetAttribute("InnerHTML")),
+                RegularColorRGB = ParsingRGB(data[0].FindElement(By.CssSelector(".regular-price")).GetCssValue("color")),
+                RegularFontSize = data[0].FindElement(By.CssSelector(".regular-price")).GetAttribute("font-size"),
+                RegularStriked = data[0].FindElement(By.CssSelector(".regular-price")).GetCssValue("strike"),
 
-                RegularColorRGB = int.Parse(data[0].FindElement(By.CssSelector(".regular-price")).GetCssValue("color")),
-                RegularFontSize = data[0].FindElement(By.CssSelector("")).GetAttribute(""),
-                RegularStriked = data[0].FindElement(By.CssSelector("")).GetAttribute(""),
-
-                ActionPrice = data[0].FindElement(By.CssSelector("")).GetAttribute(""),
-                ActionColorRGB = data[0].FindElement(By.CssSelector("")).GetAttribute(""),
-                ActionFontSize = data[0].FindElement(By.CssSelector("")).GetAttribute("")
+                ActionPrice = (float)Convert.ToDouble(data[0].FindElement(By.CssSelector(".compaign-price")).GetAttribute("InnerHTML")),
+                ActionColorRGB = ParsingRGB(data[0].FindElement(By.CssSelector(".compaign-price")).GetCssValue("color")),
+                ActionFontSize = data[0].FindElement(By.CssSelector(".compaign-price")).GetAttribute("font-size"),
             };
 
-
+            return prop;
 
         }
 

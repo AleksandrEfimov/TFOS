@@ -54,9 +54,9 @@ namespace TFOS
                 RegularFontSize = data[0].FindElement(By.CssSelector(".regular-price")).GetAttribute("font-size"),
                 RegularStriked = data[0].FindElement(By.CssSelector(".regular-price")).GetCssValue("strike"),
 
-                ActionPrice = (float)Convert.ToDouble(data[0].FindElement(By.CssSelector(".compaign-price")).GetAttribute("InnerHTML")),
-                ActionColorRGB = ParsingRGB(data[0].FindElement(By.CssSelector(".compaign-price")).GetCssValue("color")),
-                ActionFontSize = data[0].FindElement(By.CssSelector(".compaign-price")).GetAttribute("font-size"),
+                ActionPrice = (float)Convert.ToDouble(data[0].FindElement(By.CssSelector(".campaign-price")).GetAttribute("InnerHTML")),
+                ActionColorRGB = ParsingRGB(data[0].FindElement(By.CssSelector(".campaign-price")).GetCssValue("color")),
+                ActionFontSize = data[0].FindElement(By.CssSelector(".campaign-price")).GetAttribute("font-size"),
             };
 
             return prop;

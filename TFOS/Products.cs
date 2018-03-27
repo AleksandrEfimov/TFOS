@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium.Support;
+using System.Text.RegularExpressions;
 
 
 namespace TFOS
@@ -14,8 +15,9 @@ namespace TFOS
 
         public override string ToString()
         {
-
-            return base.ToString();
+            string str;
+            
+            return this.ToString();
         }
 
         public struct Properties
@@ -38,13 +40,11 @@ namespace TFOS
 
         public int[] ParsingRGB(string str)
         {
-
-            int[] Arr = new int[] { 0, 0, 0, 0 };
-            string[] stAr = str.Split(',');
-            for (int i = 0; i < stAr.Length; i++)
-                Arr[i] = Convert.ToInt32(stAr[i]);
-
-
+            int[] Arr = new int[3];
+            Regex regex = new Regex(@"\d{3}");
+            MatchCollection match = regex.Matches(str);
+            for (int i = 0; i < match.Count - 1; i++)
+                Arr[i] = int.Parse(match[i].Groups[0].Value);
             return Arr;
         }
 

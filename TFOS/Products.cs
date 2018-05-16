@@ -13,30 +13,27 @@ namespace TFOS
     {
         public Products() { }
 
-        public override string ToString()
-        {
-            string str;
-            
-            return this.ToString();
-        }
+        private Properties prop;
+
+        public Properties Prop { get => prop; set => prop = value; }
 
         public struct Properties
         {
             public string Name { get; set; }
             public string Link { get; set; }
-            
+
             public float RegularPrice { get; set; }
             public int[] RegularColorRGB;
             public string RegularFontSize;
             public string RegularStriked;
 
-            
-            
-            public float ActionPrice { get; set ; }
+
+
+            public float ActionPrice { get; set; }
             public int[] ActionColorRGB;
             public string ActionFontSize;
         }
-        
+
 
         public int[] ParsingRGB(string str)
         {
@@ -48,5 +45,6 @@ namespace TFOS
             return Arr;
         }
 
-        }
+
     }
+}

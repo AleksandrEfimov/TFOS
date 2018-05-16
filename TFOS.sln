@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFOS", "TFOS\TFOS.csproj", "{CBF76AE1-F7FD-4069-86A8-094219F3D1FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7E6F2CB6-DFAC-401B-8FCF-9FE28ACE3D1F}"
+	ProjectSection(SolutionItems) = preProject
+		TFOS\AttributeComparator.cs = TFOS\AttributeComparator.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

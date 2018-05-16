@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 /// <summary>
 /// 
 /// Зайти на главную
@@ -21,22 +22,48 @@ using System.Threading.Tasks;
 
 namespace TFOS
 {
-    class AttributeComparison: Products
+    class AttributeComparator: Products
     {
-        WebBrowserClient webBrCl;
+        internal WebBrowserClient webBrCl;
         IWebDriver driver;
-        Products [] Prod;
-        string SetUrl { get; set; }
+        
+        //string SetUrl { get; set; }
+        public Products Prod;
+        public Properties prop;
+        //private Properties prop;
+        StringBuilder strLog;
+        
 
-        public AttributeComparison()
+        public AttributeComparator()
         {
             webBrCl = new WebBrowserClient();
             driver = webBrCl.driver;
+            Prod = new Products();
+            strLog = new StringBuilder();
         }
 
-        public void InitProd(int i, Properties prop )
+        //public void InitProd(string setUrl) => Prod.Prop = GetProperties(setUrl);
+        public void InitProd(string setUrl) => prop = GetProperties(setUrl);
+
+        public StringBuilder PrintFields()
         {
-            Prod[i] = new Products();
+            
+
+            try
+            {
+                FieldInfo[] fields = typeof(Properties).GetFields(BindingFlags.Public | BindingFlags.Instance);
+                foreach (FieldInfo fieldInfo in fields)
+                {
+                    //strLog.AppendLine( fieldfInfo.Name.ToString() + ": " + fieldfInfo.GetValue(Prod.Prop).ToString());
+                    strLog.AppendLine(fieldInfo.Name.ToString() + ": " + fieldInfo.GetValue(prop).ToString());
+                    
+                        }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return strLog;
         }
 
         public Properties GetProperties(string seturl)
@@ -44,7 +71,8 @@ namespace TFOS
             driver.Url = seturl;
             var data = driver.FindElements(By.CssSelector("#box-campaigns li"));
 
-            Properties prop = new Properties()
+            prop = new Properties()
+            //Properties prop = new Properties()
             {
                 Name = data[0].FindElement(By.CssSelector(".name")).GetAttribute("InnerHTML"),
                 Link = data[0].FindElement(By.CssSelector(".link")).GetAttribute("href"),

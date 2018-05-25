@@ -22,6 +22,7 @@ using System.Reflection;
 
 namespace TFOS
 {
+    using TFOS_utilities;
     class AttributeComparator: Products
     {
         internal WebBrowserClient webBrCl;
@@ -30,7 +31,7 @@ namespace TFOS
         //string SetUrl { get; set; }
         public Products Prod;
         public Properties prop;
-        //private Properties prop;
+        
         StringBuilder strLog;
         
 
@@ -42,8 +43,8 @@ namespace TFOS
             strLog = new StringBuilder();
         }
 
-        //public void InitProd(string setUrl) => Prod.Prop = GetProperties(setUrl);
-        public void InitProd(string setUrl) => prop = GetProperties(setUrl);
+        public void InitProd(string setUrl) => Prop = GetProperties(setUrl);
+        
 
         public StringBuilder PrintFields()
         {
@@ -52,12 +53,14 @@ namespace TFOS
             try
             {
                 FieldInfo[] fields = typeof(Properties).GetFields(BindingFlags.Public | BindingFlags.Instance);
+                //FieldInfo[] fields = typeof(Products).GetFields(BindingFlags.Public | BindingFlags.Instance);
                 foreach (FieldInfo fieldInfo in fields)
                 {
                     //strLog.AppendLine( fieldfInfo.Name.ToString() + ": " + fieldfInfo.GetValue(Prod.Prop).ToString());
-                    strLog.AppendLine(fieldInfo.Name.ToString() + ": " + fieldInfo.GetValue(prop).ToString());
+                    //strLog.AppendLine(fieldInfo.Name.ToString() + ": " + fieldInfo.GetValue(Prop).ToString()??intArToStr() );
+                    strLog.AppendLine(fieldInfo.Name.ToString() + ": " + fieldInfo.GetValue(Prop).ToString());
                     
-                        }
+                }
             }
             catch (Exception ex)
             {
@@ -71,21 +74,25 @@ namespace TFOS
             driver.Url = seturl;
             var data = driver.FindElements(By.CssSelector("#box-campaigns li"));
 
-            prop = new Properties()
+            prop = new Properties();
             //Properties prop = new Properties()
-            {
-                Name = data[0].FindElement(By.CssSelector(".name")).GetAttribute("InnerHTML"),
-                Link = data[0].FindElement(By.CssSelector(".link")).GetAttribute("href"),
+            prop.strOfGetValue = "эта строка возвращена GetValue()";
+            prop.intArray = new List<int> { 1,2,3};
+            prop.Name = data[0].FindElement(By.CssSelector(".name")).GetAttribute("InnerHTML");
+            prop.Link = data[0].FindElement(By.CssSelector(".link")).GetAttribute("href");
 
-                RegularPrice = (float)Convert.ToDouble(data[0].FindElement(By.CssSelector(".regular-price")).GetAttribute("InnerHTML")),
-                RegularColorRGB = ParsingRGB(data[0].FindElement(By.CssSelector(".regular-price")).GetCssValue("color")),
-                RegularFontSize = data[0].FindElement(By.CssSelector(".regular-price")).GetAttribute("font-size"),
-                RegularStriked = data[0].FindElement(By.CssSelector(".regular-price")).GetCssValue("strike"),
+            prop.RegularPrice = (float)Convert.ToDouble(data[0].FindElement(By.CssSelector(".regular-price")).GetAttribute("InnerHTML"));
+            string str = data[0].FindElement(By.CssSelector(".regular-price")).GetCssValue("color");
+            prop.RegularColorRGB = ParsingRGB(str);
+            //prop.RegularColorRGB = ParsingRGB(data[0].FindElement(By.CssSelector(".regular-price")).GetCssValue("color"));
 
-                ActionPrice = (float)Convert.ToDouble(data[0].FindElement(By.CssSelector(".campaign-price")).GetAttribute("InnerHTML")),
-                ActionColorRGB = ParsingRGB(data[0].FindElement(By.CssSelector(".campaign-price")).GetCssValue("color")),
-                ActionFontSize = data[0].FindElement(By.CssSelector(".campaign-price")).GetAttribute("font-size"),
-            };
+            prop.RegularFontSize = data[0].FindElement(By.CssSelector(".regular-price")).GetAttribute("font-size");
+            prop.RegularStriked = data[0].FindElement(By.CssSelector(".regular-price")).GetCssValue("strike");
+
+            prop.ActionPrice = (float)Convert.ToDouble(data[0].FindElement(By.CssSelector(".campaign-price")).GetAttribute("InnerHTML"));
+            prop.ActionColorRGB = ParsingRGB(data[0].FindElement(By.CssSelector(".campaign-price")).GetCssValue("color"));
+            prop.ActionFontSize = data[0].FindElement(By.CssSelector(".campaign-price")).GetAttribute("font-size");
+            
 
             return prop;
 

@@ -7,6 +7,7 @@ using OpenQA.Selenium.Support;
 using System.Text.RegularExpressions;
 using System.Reflection;
 using System.Collections;
+using TFOS_utilities;
 
 
 namespace TFOS
@@ -24,22 +25,23 @@ namespace TFOS
 
         public struct Properties
         {
-            public string strOfGetValue;
-            public List<int> intArray;
+            public string strOfGetValue { get; set; }
+           
             public string Name { get; set; }
+            public SpecList<int> intArray { get; set; }
             public string Link { get; set; }
 
             public float RegularPrice { get; set; }
-            public List<int> RegularColorRGB;
-            public string RegularFontSize;
-            public string RegularStriked;
+            public SpecList<int> RegularColorRGB { get; set; }
+            public string RegularFontSize { get; set; }
+            public string RegularStriked { get; set; }
 
 
 
             public float ActionPrice { get; set; }
-            public List<int> ActionColorRGB;
-            public string ActionFontSize;
-            
+            public SpecList<int> ActionColorRGB { get; set; }
+            public string ActionFontSize { get; set; }
+
 
         }
 
@@ -63,9 +65,9 @@ namespace TFOS
         //}
 
 
-        public List<int> ParsingRGB(string str)
+        public SpecList<int> ParsingRGB(string str)
         {
-            List<int> Arr = new List<int>();
+            SpecList<int> Arr = new SpecList<int>();
             Regex regex = new Regex(@"\d{3}");
             MatchCollection match = regex.Matches(str);
             for (int i = 0; i < match.Count; i++)

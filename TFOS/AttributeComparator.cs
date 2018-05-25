@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using TFOS_utilities;
 /// <summary>
 /// 
 /// Зайти на главную
@@ -52,14 +53,13 @@ namespace TFOS
 
             try
             {
-                FieldInfo[] fields = typeof(Properties).GetFields(BindingFlags.Public | BindingFlags.Instance);
-                //FieldInfo[] fields = typeof(Products).GetFields(BindingFlags.Public | BindingFlags.Instance);
-                foreach (FieldInfo fieldInfo in fields)
+                //FieldInfo[] fields = typeof(Properties).GetFields(BindingFlags.Public | BindingFlags.Instance);
+                PropertyInfo[] properties = typeof(Properties).GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public);
+                foreach (PropertyInfo propertyInfo in properties)
                 {
                     //strLog.AppendLine( fieldfInfo.Name.ToString() + ": " + fieldfInfo.GetValue(Prod.Prop).ToString());
                     //strLog.AppendLine(fieldInfo.Name.ToString() + ": " + fieldInfo.GetValue(Prop).ToString()??intArToStr() );
-                    strLog.AppendLine(fieldInfo.Name.ToString() + ": " + fieldInfo.GetValue(Prop).ToString());
-                    
+                    strLog.AppendLine(propertyInfo.Name.ToString() + ": " + propertyInfo.GetValue(Prop).ToString() );
                 }
             }
             catch (Exception ex)
@@ -77,7 +77,7 @@ namespace TFOS
             prop = new Properties();
             //Properties prop = new Properties()
             prop.strOfGetValue = "эта строка возвращена GetValue()";
-            prop.intArray = new List<int> { 1,2,3};
+            prop.intArray = new SpecList<int> { 1,2,3};
             prop.Name = data[0].FindElement(By.CssSelector(".name")).GetAttribute("InnerHTML");
             prop.Link = data[0].FindElement(By.CssSelector(".link")).GetAttribute("href");
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using System.Collections;
 using OpenQA.Selenium.Support.UI;
 using System.Windows.Forms;
@@ -21,17 +22,20 @@ namespace TFOS
 
         public WebBrowserClient()
         {
-            driver = new ChromeDriver();
+            //driver = new ChromeDriver();
+            driver = new FirefoxDriver();
+
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(delay));
-            driver.Url = "ccc";
+           // driver.Url = "http://ya.ru";
 
         }
 
         public WebBrowserClient(int delay)
         {
-            driver = new ChromeDriver();
+            //driver = new ChromeDriver();
+            driver = new FirefoxDriver();
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(delay));
-            driver.Url = "ccc";
+            //driver.Url = "http://yandex.ru";
         }
 
 

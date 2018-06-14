@@ -28,34 +28,24 @@ namespace TFOS
             var products = webBrCl.driver.FindElements(By.ClassName("product"));
 
             IList<IWebElement> stickers;
-            int i = 1;
+            int i = 0;
 
 
             foreach (var prd in products)
             {
-                try
-                {
-                    stickers = prd.FindElements(By.ClassName("sticker"));
-                    if (i < stickers.Count)
-                        i = stickers.Count;
-
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
-                    throw;
-                }
+                stickers = prd.FindElements(By.ClassName("sticker"));
+                    if (stickers.Count>0)
+                        i++;
             }
-            products[0].Click();
-            if (i > 1)
-                MessageBox.Show($"Amount of stickers is more than 1: {i}");
-
+            
+            MessageBox.Show("Product number is: " + products.Count + " ; and stickers number is: " + i+" ;");
+            
         }
 
-        ~CheckingStickers()
-        {
-            webBrCl.Close();
-        }
+        //~CheckingStickers()
+        //{
+        //    webBrCl.Close();
+        //}
 
         
 

@@ -174,6 +174,9 @@ namespace TFOS
 
                     // 2я(3я) ячейка содержит выпадающий список
 
+                    // valueZone1 = zone1[2].FindElement(By.CssSelector("select option[selected = selected]")).GetAttribute("innerHTML");
+                    //valueZone2 = zoneNext[2].FindElement(By.CssSelector("select option[selected = selected]")).GetAttribute("innerHTML");
+
                     valueZone1 = zone1[2].FindElement(By.CssSelector("select option[selected = selected]")).GetAttribute("innerHTML");
                     valueZone2 = zoneNext[2].FindElement(By.CssSelector("select option[selected = selected]")).GetAttribute("innerHTML");
 

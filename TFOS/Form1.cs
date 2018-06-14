@@ -12,6 +12,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System.Collections;
 
+
 namespace TFOS
 {
     public partial class Form1 : Form
@@ -78,12 +79,35 @@ namespace TFOS
 
         private void button5_Click(object sender, EventArgs e)
         {
-
+            
             AttributeComparator attrCompr = new AttributeComparator();
-            attrCompr.InitProd("http://localhost:8080/litecart/en/");
-            MessageBox.Show(attrCompr.PrintFields().ToString()) ;
+            attrCompr.initMainPage("http://localhost:8080/litecart/en/");
+
+            Products.Properties pMainPage = attrCompr.Prop;
+            attrCompr.initCampaignPage(pMainPage.Link);
+            Products.Properties pProdPage = attrCompr.Prop;
+
+            FormAttributeComparator acResultView = new FormAttributeComparator();
+            acResultView.tbResult = attrCompr.PrintFields(pMainPage, pProdPage).ToString();
+
+            if (acResultView.ShowDialog() != DialogResult.OK)
+                return;
+            
+
+            //MessageBox.Show(attrCompr.PrintFields(pMainPage,pProdPage).ToString()) ;
+
+            //MessageBox.Show(attrCompr.PrintFields(pProdPage).ToString()) ;
+
             attrCompr.webBrCl.Close();
             
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            UserAction uAc = new UserAction("http://localhost:8080/litecart/en/");
+            MessageBox.Show("Number of rows in table:" + uAc.SignUp().ToString());
+
+
         }
     }
 }

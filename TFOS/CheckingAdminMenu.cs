@@ -14,15 +14,18 @@ namespace TFOS
     class CheckingAdminMenu
     {
         
-        public WebBrowserClient webBrCl;
+       // public WebBrowserClient webBrCl;
+        public WebBrowserClient webBrCl = new WebBrowserClient(30);
         IWebDriver driver;
         string SetUrl { get;set; }
 
         public CheckingAdminMenu(string seturl)
         {
-            webBrCl = new WebBrowserClient(30);
-            SetUrl = seturl;
+            
+            //SetUrl = seturl;
             driver = webBrCl.driver;
+            driver.Url = seturl;
+            
         }
 
         public void CheckMenu()

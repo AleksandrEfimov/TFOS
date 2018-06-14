@@ -26,7 +26,7 @@ namespace TFOS_utilities
 
     class SpecList<T> : List<T>
     {
-        static StringBuilder sb;
+        /*static StringBuilder sb;
 
         public override string ToString()
         {
@@ -34,13 +34,17 @@ namespace TFOS_utilities
             sb.Append("[");
             foreach (var V in this)
                 sb.Append(V.ToString() + ",");
-            if(sb.Length>1)
+            if (sb.Length > 1)
                 sb.Remove(sb.Length - 1, 1);
             sb.Append("]");
             return sb.ToString();
-        }
+        }*/
 
+        public override string ToString() => this[0].Equals(this[1]) ?
+                                  (this[1].Equals(this[2]) ? "Grey" : "No determine")
+                                : (this[1].Equals(0) & this[2].Equals(0)) ? "Red" : "No determineR";
 
+        
     }
 
 

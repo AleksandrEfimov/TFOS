@@ -25,27 +25,6 @@ namespace TFOS
 
         public struct Properties
         {
-            /*
-            public string strOfGetValue;
-
-            public string Name;
-            public SpecList<int> intArray;
-            public string Link;
-
-            public float RegularPrice;
-            public SpecList<int> RegularColorRGB;
-            public string RegularFontSize;
-            public string RegularStriked;
-
-
-
-            public float CampaignPrice;
-            public SpecList<int> CampaignColorRGB;
-            public string CampaignFontSize;
-            */
-            //public string strOfGetValue { get; set; }
-            //public SpecList<int> intArray { get; set; }
-
             public string Name { get; set; }
             public string Link { get; set; }
             public string RegularPrice { get; set; }
@@ -62,25 +41,6 @@ namespace TFOS
         }
 
         
-        ////public string intArToStr(this Array arr)
-        //public static string ToString(this int[] arr)
-        //{
-        //    //string res = "[";
-            
-        //    sb.Append("[");
-        //    foreach (var V in arr)
-        //        sb.Append( V.ToString()+",");
-        //    sb.Remove(sb.Length-1,1);
-        //    sb.Append("]");
-        //    return sb.ToString();
-        //}
-        //public override string ToString()
-        //{
-
-        //    return base.ToString();
-        //}
-
-
         public SpecList<int> ParsingRGB(string str)
         {
             SpecList<int> Arr = new SpecList<int>();

@@ -47,9 +47,13 @@ namespace TFOS
                 phone.Clear();
                 phone.SendKeys("0123456789");
                 var newsletterSubsc = driver.FindElement(By.Name("newsletter"));
-                newsletterSubsc.
+                if (newsletterSubsc.GetAttribute("value") == "checked")
+                    newsletterSubsc.Click();
+                var password = driver.FindElement(By.Name("password"));
+                password.SendKeys("1");
                 
-                
+
+
                 return i;
             }
             catch (Exception ex)

@@ -22,8 +22,8 @@ namespace TFOS
 
         public WebBrowserClient()
         {
-            //driver = new ChromeDriver();
-            driver = new FirefoxDriver();
+            driver = new ChromeDriver();
+            //driver = new FirefoxDriver();
 
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(delay));
            // driver.Url = "http://ya.ru";
@@ -32,8 +32,8 @@ namespace TFOS
 
         public WebBrowserClient(int delay)
         {
-            //driver = new ChromeDriver();
-            driver = new FirefoxDriver();
+            driver = new ChromeDriver();
+            //driver = new FirefoxDriver();
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(delay));
             //driver.Url = "http://yandex.ru";
         }

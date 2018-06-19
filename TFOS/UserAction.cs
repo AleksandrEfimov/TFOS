@@ -35,12 +35,18 @@ namespace TFOS
                 var address1 = SignUpForm.FindElement(By.Name("address1"));
                 address1.SendKeys("address1");
                 var postcode = SignUpForm.FindElement(By.Name("postcode"));
-                postcode.SendKeys("12345");
+                postcode.SendKeys("10001");
                 var city = SignUpForm.FindElement(By.Name("city"));
                 city.SendKeys("city");
                 var ddlCountry = SignUpForm.FindElement(By.Name("country_code"));
+                var ddlCountry = SignUpForm.FindElement(By.Id("select2-country_code-c5-container"));
+                ddlCountry.Click();
                 var selectCountry = new SelectElement(ddlCountry);
-                selectCountry.SelectByValue("Unated States");
+                selectCountry.SelectByText("United States");
+                var zone_code = SignUpForm.FindElement(By.Name("zone_code"));
+                var selectZone = new SelectElement(zone_code);
+                selectZone.SelectByValue("AL");
+                //selectCountry.SelectByValue("US");
                 var email = driver.FindElement(By.Name("email"));
                 email.SendKeys("email@ru.ru");
                 var phone = driver.FindElement(By.Name("phone"));
@@ -51,10 +57,14 @@ namespace TFOS
                     newsletterSubsc.Click();
                 var password = driver.FindElement(By.Name("password"));
                 password.SendKeys("1");
-                
+                var confirmed_password = driver.FindElement(By.Name("confirmed_password"));
+                confirmed_password.SendKeys("1");
+                var btnCreateAcc = driver.FindElement(By.Name("Create Account"));
+                btnCreateAcc.Submit();
 
 
-                return i;
+
+                return "Create account successfuul! No, you cannt see that..";
             }
             catch (Exception ex)
             {

@@ -105,8 +105,8 @@ namespace TFOS
         private void button6_Click(object sender, EventArgs e)
         {
             UserAction uAc = new UserAction("http://localhost:8080/litecart/en/");
-            MessageBox.Show("Number of rows in table:" + uAc.SignUp().ToString());
-
+            MessageBox.Show("Result operation: " + uAc.SignUp().ToString());
+            uAc.webBrCl.Close();
 
         }
     }

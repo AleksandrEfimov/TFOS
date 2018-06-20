@@ -10,7 +10,7 @@ namespace TFOS
 {
     class UserAction
     {
-        WebBrowserClient webBrCl = new WebBrowserClient();
+        public WebBrowserClient webBrCl = new WebBrowserClient();
         IWebDriver driver;
         Random rnd = new Random();
         public UserAction(string seturl)
@@ -50,44 +50,45 @@ namespace TFOS
                 
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
                 // zone_code = SignUpForm.FindElement(wait.Until(By.CssSelector("td:nth-child(2) > select")));
-                var zone_code = wait.Until. SignUpForm.FindElement(By.CssSelector("td:nth-child(2) > select")));
-                
+                var zone_code = wait.Until(ExpectedConditions.ElementIsVisible
+                    (By.CssSelector("td:nth-child(2) > select")));
 
-                wait.Until(zone_code => SignUpForm.FindElement(By.CssSelector("td:nth-child(2) > select")));
 
-                var selectZone = new SelectElement(zone_code);
 
-                selectZone.SelectByText("Alaska")
+                //zone_code = SignUpForm.FindElement(By.CssSelector("td:nth-child(2) > select"));
                 var email = driver.FindElement(By.Name("email"));
-                email.SendKeys("email"+_rnd+"@ru.ru");
+                email.SendKeys("email" + _rnd + "@ru.ru");
+                var selectZone = new SelectElement(zone_code);
+                //selectZone.SelectByText("Alaska");
+                var zoneCodeVisible = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("select > option:nth-child(2)")));
+                selectZone.SelectByValue("AK");
+                
                 var phone = driver.FindElement(By.Name("phone"));
                 phone.Clear();
                 phone.SendKeys("0123456789");
                 var newsletterSubsc = driver.FindElement(By.Name("newsletter"));
-                if (newsletterSubsc.GetAttribute("value") == "checked")
+                if(newsletterSubsc.Selected == true)
                     newsletterSubsc.Click();
                 var password = driver.FindElement(By.Name("password"));
                 password.SendKeys("1");
                 var confirmed_password = driver.FindElement(By.Name("confirmed_password"));
                 confirmed_password.SendKeys("1");
                 var btnCreateAcc = driver.FindElement(By.Name("create_account"));
-                btnCreateAcc.Submit();
+                btnCreateAcc.Click(); //Submit();
+                var boxAcc = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("box-account")));
+                
+                var logout = boxAcc.FindElement(By.LinkText("Logout"));
+                logout.Click();
 
-
-
-                return "Create account successfuul! No, you cannt see that..";
+                return "Create account successfuul!";
             }
             catch (Exception ex)
             {
                 return ex.ToString();
             }
+
         }
 
-
-
-
-
-
-
+        
     }
 }

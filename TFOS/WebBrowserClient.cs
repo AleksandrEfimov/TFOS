@@ -17,7 +17,7 @@ namespace TFOS
     {
         protected internal IWebDriver driver;
 
-        int delay = 10;
+        int delay = 15;
         WebDriverWait wait;
 
         public WebBrowserClient()
@@ -30,11 +30,11 @@ namespace TFOS
 
         }
 
-        public WebBrowserClient(int delay)
+        public WebBrowserClient(int _delay)
         {
             driver = new ChromeDriver();
             //driver = new FirefoxDriver();
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(delay));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(_delay));
             //driver.Url = "http://yandex.ru";
         }
 

@@ -39,16 +39,27 @@ namespace TFOS
                 var city = SignUpForm.FindElement(By.Name("city"));
                 city.SendKeys("city");
                 var ddlCountry = SignUpForm.FindElement(By.Name("country_code"));
-                var ddlCountry = SignUpForm.FindElement(By.Id("select2-country_code-c5-container"));
-                ddlCountry.Click();
+                
                 var selectCountry = new SelectElement(ddlCountry);
                 selectCountry.SelectByText("United States");
-                var zone_code = SignUpForm.FindElement(By.Name("zone_code"));
+
+                //var zone_code = SignUpForm.FindElement(By.Name("zone_code"));
+                
+//# create-account > div > form > table > tbody > tr:nth-child(5) > td:nth-child(2) > select
+                //*[@id="create-account"]/div/form/table/tbody/tr[5]/td[2]/select
+                
+                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+                // zone_code = SignUpForm.FindElement(wait.Until(By.CssSelector("td:nth-child(2) > select")));
+                var zone_code = wait.Until. SignUpForm.FindElement(By.CssSelector("td:nth-child(2) > select")));
+                
+
+                wait.Until(zone_code => SignUpForm.FindElement(By.CssSelector("td:nth-child(2) > select")));
+
                 var selectZone = new SelectElement(zone_code);
-                selectZone.SelectByValue("AL");
-                //selectCountry.SelectByValue("US");
+
+                selectZone.SelectByText("Alaska")
                 var email = driver.FindElement(By.Name("email"));
-                email.SendKeys("email@ru.ru");
+                email.SendKeys("email"+_rnd+"@ru.ru");
                 var phone = driver.FindElement(By.Name("phone"));
                 phone.Clear();
                 phone.SendKeys("0123456789");
@@ -59,7 +70,7 @@ namespace TFOS
                 password.SendKeys("1");
                 var confirmed_password = driver.FindElement(By.Name("confirmed_password"));
                 confirmed_password.SendKeys("1");
-                var btnCreateAcc = driver.FindElement(By.Name("Create Account"));
+                var btnCreateAcc = driver.FindElement(By.Name("create_account"));
                 btnCreateAcc.Submit();
 
 

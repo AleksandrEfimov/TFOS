@@ -68,6 +68,11 @@ namespace TFOS
             }
         }
 
+        public void ToCatalog()
+        {
+            var catLink = this.driver.FindElement(By.LinkText("Catalog"));
+            catLink.Click();
+        }
 
         public void Close()
         {

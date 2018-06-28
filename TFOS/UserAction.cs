@@ -43,13 +43,9 @@ namespace TFOS
                 var selectCountry = new SelectElement(ddlCountry);
                 selectCountry.SelectByText("United States");
 
-                //var zone_code = SignUpForm.FindElement(By.Name("zone_code"));
-                
-//# create-account > div > form > table > tbody > tr:nth-child(5) > td:nth-child(2) > select
-                //*[@id="create-account"]/div/form/table/tbody/tr[5]/td[2]/select
                 
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-                // zone_code = SignUpForm.FindElement(wait.Until(By.CssSelector("td:nth-child(2) > select")));
+                
                 var zone_code = wait.Until(ExpectedConditions.ElementIsVisible
                     (By.CssSelector("td:nth-child(2) > select")));
 

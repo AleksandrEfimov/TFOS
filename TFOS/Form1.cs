@@ -109,5 +109,17 @@ namespace TFOS
             uAc.webBrCl.Close();
 
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            AddingProductToTheRange addProd = new AddingProductToTheRange();
+            addProd.webBrCl.ToCatalog();
+            addProd.btnAddNewProductClick();
+            MessageBox.Show( addProd.CatalogGeneral());
+            addProd.CatalogInformation();
+            MessageBox.Show( addProd.CatalogPrices());
+            
+
+        }
     }
 }

@@ -115,9 +115,10 @@ namespace TFOS
             AddingProductToTheRange addProd = new AddingProductToTheRange();
             addProd.webBrCl.ToCatalog();
             addProd.btnAddNewProductClick();
-            MessageBox.Show( addProd.CatalogGeneral());
+            addProd.CatalogGeneral();
             addProd.CatalogInformation();
             MessageBox.Show( addProd.CatalogPrices());
+            addProd.webBrCl.Close();
             
 
         }

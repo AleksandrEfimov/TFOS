@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddingProductToTheRange.cs" />
+    <Compile Include="AddToCart.cs" />
     <Compile Include="AttributeComparator.cs" />
     <Compile Include="CheckingAdminMenu.cs" />
     <Compile Include="ChkngCntrySorting .cs" />

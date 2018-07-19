@@ -119,7 +119,12 @@ namespace TFOS
             addProd.CatalogInformation();
             MessageBox.Show( addProd.CatalogPrices());
             addProd.webBrCl.Close();
-            
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            AddToCart addToCart = new AddToCart();
+            MessageBox.Show( addToCart.GetProdOnMain());
 
         }
     }

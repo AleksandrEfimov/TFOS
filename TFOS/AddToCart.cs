@@ -30,7 +30,7 @@ namespace TFOS
         public WebBrowserClient webBrCl = new WebBrowserClient(20);
         public IWebDriver driver;
         List<string> listAddedName = new List<string>();
-        List <IWebElement> prodArrayOnMain;
+        List <IWebElement> prodArrayOnMain = new List<IWebElement>();
         IWebElement prodName;
         IWebElement prod;
 
@@ -40,44 +40,69 @@ namespace TFOS
             driver.Url = "http://localhost:8080/litecart/en/";
         }
 
-        public void GetProdOnMain()
+        public string GetProdOnMain()
         {
-            int i = 0;
-            do
-            { 
-                // список товаров представленых на Main
-                prodArrayOnMain.AddRange( driver.FindElements(By.ClassName("product column shadow hover-light")));
-                prodName = prodArrayOnMain[i].FindElement(By.ClassName("link"));
+            try
+            {
+                var qntty = driver.FindElement(By.CssSelector("#cart .quantity")).Text;
+                int actual_quantity = int.Parse(qntty);
+                int i = 0;
+                int expected_quantity = 0;
 
-                if (!listAddedName.Contains(prodName.Text))
+                do
                 {
-                    listAddedName.Add(prodName.Text);
-                    // вызов функции перехода на страницу и добавления там в корзину
-                    prodName.Click();
-                    prod = driver.FindElement(By.TagName("h1"));
-                    if ("Yellow Duck".Equals(prod.Text))
+                    // список товаров представленых на Main
+                    //prodArrayOnMain.AddRange(driver.FindElements(By.ClassName("product column shadow hover-light")));
+                    //#box-most-popular > div > ul > li:nth-child(2)
+                    // //*[@id="box-most-popular"]/div/ul/li[2]
+                    //prodArrayOnMain.AddRange(driver.FindElements(By.XPath("*[@id=\"box - most - popular\"]/div/ul/li")));
+                    prodArrayOnMain.AddRange(driver.FindElements(By.Id("box-most-popular")));
+
+                    prodName = prodArrayOnMain[i].FindElement(By.ClassName("link"));
+
+                    if (!listAddedName.Contains(prodName.Text))
                     {
-                        prod = driver.FindElement(By.Name("options[Size]"));
-                        prod.SendKeys("Large"); // или Large +$5
+                        listAddedName.Add(prodName.Text);
+                        // вызов функции перехода на страницу и добавления там в корзину
+                        prodName.Click();
+                        prod = driver.FindElement(By.TagName("h1"));
+                        if ("Yellow Duck".Equals(prod.Text))
+                        {
+                            prod = driver.FindElement(By.Name("options[Size]"));
+                            prod.SendKeys("Large"); // или Large +$5
+                        }
+                        IWebElement cart_count = driver.FindElement(By.Id("cart"));
+                        // #cart
+                        Actions action = new Actions(driver)
+                                            .MoveToElement(driver.FindElement(By.Name("add_cart_product")))
+                                            .Click();
+                        expected_quantity = actual_quantity + 1;
+
+                        // посмтреть что такое iclock clock
+                        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+
+
+                        //var manufacturer_id = wait.Until(ExpectedConditions.ElementIsVisible(By.Name("manufacturer_id")));
+                        //ПЕРЕПИСАТь - возможен вечный цикл !!!
+                        do
+                        {
+                            qntty = driver.FindElement(By.CssSelector("#cart .quantity")).Text;
+                        } while (expected_quantity == int.Parse(qntty));
+                        //возврат на стартовуюя страницу
+
+
                     }
-                    IWebElement cart_count = driver.FindElement(By.XPath("[@id=\"cart\"]/a[2]/span[1]"));
-                    Actions action = new Actions(driver)
-                                        .MoveToElement(driver.FindElement(By.Name("add_cart_product")))
-                                        .Click();
-                    // написать ожидание изменения числа товаров в корзине
-                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-                    var manufacturer_id = wait.Until(ExpectedConditions.ElementIsVisible(By.Name("manufacturer_id")));
+                    else i++;
 
+                } while (listAddedName.Count != 3);
+                // && prodName.Text != "Yellow Duck"
 
-
-                    // работаем с новой страницей
-
-
-                }
-                else i++;
-
-            } while (listAddedName.Count != 3 );
-            // && prodName.Text != "Yellow Duck"
+                return "В корзину добавлено товаров: " + expected_quantity;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
         }
 
 

@@ -123,8 +123,8 @@ namespace TFOS
 
         private void button8_Click(object sender, EventArgs e)
         {
-            AddToCart addToCart = new AddToCart();
-            MessageBox.Show( addToCart.GetProdOnMain());
+            Cart addToCart = new Cart();
+            MessageBox.Show( addToCart.SelectUniqItems());
 
         }
     }

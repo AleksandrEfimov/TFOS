@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Interactions;
+using System.Threading;
 
 /* 1 - получаем список тоаров на Main
  * 2 - ищем link`и товаров
@@ -25,86 +26,117 @@ using OpenQA.Selenium.Interactions;
 
 namespace TFOS
 {
-    class AddToCart
+    class Cart
     {
         public WebBrowserClient webBrCl = new WebBrowserClient(20);
         public IWebDriver driver;
-        List<string> listAddedName = new List<string>();
-        List <IWebElement> prodArrayOnMain = new List<IWebElement>();
-        IWebElement prodName;
+        List<string> listNameAddedProds = new List<string>();
+        List <IWebElement> prodItemsArr = new List<IWebElement>();
+        IWebElement prodsOnMainPage;
         IWebElement prod;
+        string mainPage = "http://localhost:8080/litecart/en/";
+        int expected_quantity = 0;
 
-        public AddToCart()
+        public Cart()
         {
             driver = webBrCl.driver;
-            driver.Url = "http://localhost:8080/litecart/en/";
+            driver.Url = mainPage;
         }
-
-        public string GetProdOnMain()
+        /// <summary>
+        /// Выбирает уникальные для корзины товары.
+        /// </summary>
+        /// <returns></returns>
+        public string SelectUniqItems()
         {
-            try
-            {
-                var qntty = driver.FindElement(By.CssSelector("#cart .quantity")).Text;
-                int actual_quantity = int.Parse(qntty);
-                int i = 0;
-                int expected_quantity = 0;
+            GetProdLinksOnMainPage();
+                                          
+            int prodLinksNumber = 0;
 
                 do
                 {
-                    // список товаров представленых на Main
-                    //prodArrayOnMain.AddRange(driver.FindElements(By.ClassName("product column shadow hover-light")));
-                    //#box-most-popular > div > ul > li:nth-child(2)
-                    // //*[@id="box-most-popular"]/div/ul/li[2]
-                    //prodArrayOnMain.AddRange(driver.FindElements(By.XPath("*[@id=\"box - most - popular\"]/div/ul/li")));
-                    prodArrayOnMain.AddRange(driver.FindElements(By.Id("box-most-popular")));
-
-                    prodName = prodArrayOnMain[i].FindElement(By.ClassName("link"));
-
-                    if (!listAddedName.Contains(prodName.Text))
+                    bool added = false;
+                    GetProdLinksOnMainPage();
+                    while (!added)
                     {
-                        listAddedName.Add(prodName.Text);
-                        // вызов функции перехода на страницу и добавления там в корзину
-                        prodName.Click();
-                        prod = driver.FindElement(By.TagName("h1"));
-                        if ("Yellow Duck".Equals(prod.Text))
+                        //отбрасываем товары одноимённые добавленным ранее 
+                        // Text содержит:
+                        // Blue Duck
+                        // ACME Corp.
+                        // $20
+                        if (!listNameAddedProds.Contains(prodItemsArr[prodLinksNumber].Text))
                         {
-                            prod = driver.FindElement(By.Name("options[Size]"));
-                            prod.SendKeys("Large"); // или Large +$5
+                            listNameAddedProds.Add(prodItemsArr[prodLinksNumber].Text);
+                            // вызов функции перехода на страницу и добавления там в корзину
+                            prodItemsArr[prodLinksNumber].Click();
                         }
-                        IWebElement cart_count = driver.FindElement(By.Id("cart"));
-                        // #cart
-                        Actions action = new Actions(driver)
-                                            .MoveToElement(driver.FindElement(By.Name("add_cart_product")))
-                                            .Click();
-                        expected_quantity = actual_quantity + 1;
-
-                        // посмтреть что такое iclock clock
-                        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-
-
-                        //var manufacturer_id = wait.Until(ExpectedConditions.ElementIsVisible(By.Name("manufacturer_id")));
-                        //ПЕРЕПИСАТь - возможен вечный цикл !!!
-                        do
-                        {
-                            qntty = driver.FindElement(By.CssSelector("#cart .quantity")).Text;
-                        } while (expected_quantity == int.Parse(qntty));
-                        //возврат на стартовуюя страницу
-
-
+                        else prodLinksNumber++;
                     }
-                    else i++;
+                } while (listNameAddedProds.Count < 3);
 
-                } while (listAddedName.Count != 3);
-                // && prodName.Text != "Yellow Duck"
-
+                IWebElement cart_count = driver.FindElement(By.Id("cart"));
+                
                 return "В корзину добавлено товаров: " + expected_quantity;
-            }
-            catch (Exception ex)
+            
+        }
+        void AddToCart()
+        {
+            try
             {
-                return ex.ToString();
+                driver.FindElements(By.Name("options[Size]"))[0]?.SendKeys("Large");
             }
+            catch { }
+
+            //Actions action = new Actions(driver)
+            //                   .MoveToElement(driver.FindElement(By.Name("add_cart_product")))
+            //                  .Click();
+            var item  = driver.FindElement(By.Name("add_cart_product")).Submit();
+
+
+            expected_quantity = GetActualQuantity() + 1; //кривая актуаль
+
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            //ожидаем добавления в корзину (пока товар долетит)
+            int j = 10;
+            do
+            {
+                Thread.Sleep(TimeSpan.FromMilliseconds(100));
+                j--;
+            } while (expected_quantity != GetActualQuantity());
+
+            // ??? 
+            return  
+            added = true;
         }
 
+        int QantityInCart()
+        {
+            int qantity = Convert.ToInt16(driver.FindElement(By.CssSelector("#cart .quantity")).Text);
+            return qantity;
+        }
+
+
+
+        /// <summary>
+        /// инициализирует массив prodItemsArr товарами со страницы mainPage
+        /// </summary>
+        void GetProdLinksOnMainPage()
+        {
+            prodItemsArr.Clear();
+            driver.Url = mainPage;
+            prodsOnMainPage = driver.FindElement(By.Id("box-most-popular"));
+            prodItemsArr.AddRange(prodsOnMainPage.FindElements(By.ClassName("link")));
+        }
+        
+        void ClearCart()
+        {
+            driver.FindElement(By.CssSelector("#cart"))?.Click();
+
+            //# order_confirmation-wrapper > table > tbody > tr:nth-child(3) > td.item
+            driver.Url = mainPage;
+            
+        }
+        
+        int GetActualQuantity() => int.Parse(driver.FindElement(By.CssSelector("#cart .quantity")).Text); 
 
     }
 }

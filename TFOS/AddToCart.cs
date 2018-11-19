@@ -7,6 +7,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Interactions;
 using System.Threading;
+using System.Collections;
 
 /* 1 - получаем список тоаров на Main
  * 2 - ищем link`и товаров
@@ -30,7 +31,7 @@ namespace TFOS
     {
         public WebBrowserClient webBrCl = new WebBrowserClient(20);
         public IWebDriver driver;
-        List<string> listNameAddedProds = new List<string>();
+        List<string> prodInCart = new List<string>();
         List <IWebElement> prodItemsArr = new List<IWebElement>();
         IWebElement prodsOnMainPage;
         IWebElement prod;
@@ -80,21 +81,23 @@ namespace TFOS
         }
         void AddToCart()
         {
-            try
-            {
-                driver.FindElements(By.Name("options[Size]"))[0]?.SendKeys("Large");
-            }
-            catch { }
+            
+            ArrayList isSize = driver.FindElements(By.Name("options[Size]"));
+            if(isSize.Length > 0)
+
+            
 
             //Actions action = new Actions(driver)
             //                   .MoveToElement(driver.FindElement(By.Name("add_cart_product")))
             //                  .Click();
-            var item  = driver.FindElement(By.Name("add_cart_product")).Submit();
-
+            var item  = driver.FindElement(By.Name("add_cart_product"));
+            item.Submit();
 
             expected_quantity = GetActualQuantity() + 1; //кривая актуаль
 
+
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+
             //ожидаем добавления в корзину (пока товар долетит)
             int j = 10;
             do

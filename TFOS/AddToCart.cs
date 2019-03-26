@@ -27,119 +27,82 @@ using System.Collections;
 
 namespace TFOS
 {
-    class Cart
+    class WorkWithCart
     {
         public WebBrowserClient webBrCl = new WebBrowserClient(20);
         public IWebDriver driver;
         List<string> prodInCart = new List<string>();
-        List <IWebElement> prodItemsArr = new List<IWebElement>();
+        IWebElement Prod;
         IWebElement prodsOnMainPage;
-        IWebElement prod;
-        string mainPage = "http://localhost:8080/litecart/en/";
-        int expected_quantity = 0;
+        int quantityInCart = 0;
+        WebDriverWait wait;
+        IJavaScriptExecutor js;
 
-        public Cart()
+        int GetActualQuantity() => int.Parse(driver.FindElement(By.CssSelector("#cart .quantity")).Text);
+        void btnAddToCart() => driver.FindElement(By.Name("add_cart_product")).Submit();
+                
+        /// <summary>
+        /// Конструктор класса
+        /// </summary>
+        public WorkWithCart()
         {
             driver = webBrCl.driver;
-            driver.Url = mainPage;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            js = (IJavaScriptExecutor)driver;
         }
+
+
+        private void ClickProdOnMainPage(int number = default)
+        {
+            webBrCl.ToMain();
+            driver.FindElements(By.CssSelector("#box-most-popular li"))[number].Click();
+        }
+
         /// <summary>
-        /// Выбирает уникальные для корзины товары.
+        /// На странице товара выбираем размер, если есть. Кликаем добавить.
         /// </summary>
-        /// <returns></returns>
-        public string SelectUniqItems()
+        public bool AddToCart(int expextedQantity)
         {
-            GetProdLinksOnMainPage();
-                                          
-            int prodLinksNumber = 0;
 
-                do
-                {
-                    bool added = false;
-                    GetProdLinksOnMainPage();
-                    while (!added)
-                    {
-                        //отбрасываем товары одноимённые добавленным ранее 
-                        // Text содержит:
-                        // Blue Duck
-                        // ACME Corp.
-                        // $20
-                        if (!listNameAddedProds.Contains(prodItemsArr[prodLinksNumber].Text))
-                        {
-                            listNameAddedProds.Add(prodItemsArr[prodLinksNumber].Text);
-                            // вызов функции перехода на страницу и добавления там в корзину
-                            prodItemsArr[prodLinksNumber].Click();
-                        }
-                        else prodLinksNumber++;
-                    }
-                } while (listNameAddedProds.Count < 3);
-
-                IWebElement cart_count = driver.FindElement(By.Id("cart"));
-                
-                return "В корзину добавлено товаров: " + expected_quantity;
-            
-        }
-        void AddToCart()
-        {
-            
-            ArrayList isSize = driver.FindElements(By.Name("options[Size]"));
-            if(isSize.Length > 0)
-
-            
-
-            //Actions action = new Actions(driver)
-            //                   .MoveToElement(driver.FindElement(By.Name("add_cart_product")))
-            //                  .Click();
-            var item  = driver.FindElement(By.Name("add_cart_product"));
-            item.Submit();
-
-            expected_quantity = GetActualQuantity() + 1; //кривая актуаль
-
-
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-
-            //ожидаем добавления в корзину (пока товар долетит)
-            int j = 10;
-            do
+            for (int i = 0; i < expextedQantity; i++)
             {
-                Thread.Sleep(TimeSpan.FromMilliseconds(100));
-                j--;
-            } while (expected_quantity != GetActualQuantity());
+                ClickProdOnMainPage();
 
-            // ??? 
-            return  
-            added = true;
+                var isSize = driver.FindElements(By.Name("options[Size]"));
+                if (isSize.Count > 0)
+                {
+                    // isSize[0].Click();
+                    SelectElement select = new SelectElement(isSize[0]);
+                    select.SelectByText("Small");
+                }
+                btnAddToCart();
+                //Actions action = new Actions(driver)
+                //                   .MoveToElement(driver.FindElement(By.Name("add_cart_product")))
+                //                  .Click();
+                //ExpectedConditions ex = new ExpectedConditions(driver);
+                var expectedQ = i + 1;
+                //ожидаем добавления в корзину (пока товар долетит)
+                wait.Until(wd => js.ExecuteScript(
+                        "return document.querySelector('span.quantity').innerText").ToString()
+                        .Equals(expectedQ.ToString()));
+                
+            }
+            if (expextedQantity == GetActualQuantity()) 
+               {
+                    return true;
+               }
+            else return false;
         }
 
-        int QantityInCart()
+
+
+        ~WorkWithCart()
         {
-            int qantity = Convert.ToInt16(driver.FindElement(By.CssSelector("#cart .quantity")).Text);
-            return qantity;
-        }
-
-
-
-        /// <summary>
-        /// инициализирует массив prodItemsArr товарами со страницы mainPage
-        /// </summary>
-        void GetProdLinksOnMainPage()
-        {
-            prodItemsArr.Clear();
-            driver.Url = mainPage;
-            prodsOnMainPage = driver.FindElement(By.Id("box-most-popular"));
-            prodItemsArr.AddRange(prodsOnMainPage.FindElements(By.ClassName("link")));
+            webBrCl.Close();
         }
         
-        void ClearCart()
-        {
-            driver.FindElement(By.CssSelector("#cart"))?.Click();
-
-            //# order_confirmation-wrapper > table > tbody > tr:nth-child(3) > td.item
-            driver.Url = mainPage;
-            
-        }
-        
-        int GetActualQuantity() => int.Parse(driver.FindElement(By.CssSelector("#cart .quantity")).Text); 
-
     }
+
+
+    
 }

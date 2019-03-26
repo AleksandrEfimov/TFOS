@@ -123,9 +123,12 @@ namespace TFOS
 
         private void button8_Click(object sender, EventArgs e)
         {
-            Cart addToCart = new Cart();
-            MessageBox.Show( addToCart.SelectUniqItems());
-
+            WorkWithCart workWithCart = new WorkWithCart();
+            MessageBox.Show( 
+                workWithCart.AddToCart(3)
+                ? "Добавлено 3 уточки" 
+                : "Не все утки долетели до корзины"
+                );
         }
     }
 }

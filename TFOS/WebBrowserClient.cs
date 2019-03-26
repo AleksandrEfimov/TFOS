@@ -44,6 +44,7 @@ namespace TFOS
             driver.Url = $"{str}";
         }
 
+
         // логин в админ панель
         public void logInAdmin()
         {
@@ -79,6 +80,10 @@ namespace TFOS
             driver.Close();
             driver.Quit();
             driver = null;
+        }
+        public void ToMain()
+        {
+            driver.Url = "http://localhost:8080/litecart/en/";
         }
 
     }

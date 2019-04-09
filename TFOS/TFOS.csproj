@@ -59,6 +59,7 @@
     <Compile Include="AddToCart.cs" />
     <Compile Include="AttributeComparator.cs" />
     <Compile Include="CheckingAdminMenu.cs" />
+    <Compile Include="CheckNewWindow.cs" />
     <Compile Include="ChkngCntrySorting .cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

@@ -130,5 +130,17 @@ namespace TFOS
                 : "Не все утки долетели до корзины"
                 );
         }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            CheckNewWindow checkNewWindow = new CheckNewWindow();
+            checkNewWindow.SwithToTab(checkNewWindow.linkArr);
+            MessageBox.Show(
+            checkNewWindow.sbIsError.Length > 0 ? 
+            checkNewWindow.sbIsError :
+            "All fine"
+            );
+
+        }
     }
 }

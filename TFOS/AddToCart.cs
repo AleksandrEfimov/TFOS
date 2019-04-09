@@ -99,6 +99,7 @@ namespace TFOS
         ~WorkWithCart()
         {
             webBrCl.Close();
+            webBrCl.driver.Quit();
         }
         
     }

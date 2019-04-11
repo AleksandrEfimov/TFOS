@@ -129,6 +129,7 @@ namespace TFOS
                 ? "Добавлено 3 уточки" 
                 : "Не все утки долетели до корзины"
                 );
+            workWithCart.webBrCl.Close();
         }
 
         private void button9_Click(object sender, EventArgs e)
@@ -137,10 +138,10 @@ namespace TFOS
             checkNewWindow.SwithToTab(checkNewWindow.linkArr);
             MessageBox.Show(
             checkNewWindow.sbIsError.Length > 0 ? 
-            checkNewWindow.sbIsError :
+            checkNewWindow.sbIsError.ToString() :
             "All fine"
             );
-
+            checkNewWindow.webBrCl.Close();
         }
     }
 }

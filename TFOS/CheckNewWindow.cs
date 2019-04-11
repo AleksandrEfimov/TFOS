@@ -20,7 +20,7 @@ namespace TFOS
         int quantityInCart = 0;
         WebDriverWait wait;
         IJavaScriptExecutor js;
-        public StringBuilder sbIsError;
+        public StringBuilder sbIsError = new StringBuilder();
         Dictionary<string, string> dictErr = new Dictionary<string,string>();
         public List<IWebElement> linkArr => driver.FindElements(By.CssSelector("form a[href^='http']")).ToList();
 
@@ -31,7 +31,7 @@ namespace TFOS
         {
             driver = webBrCl.driver;
             webBrCl.logInAdmin();
-            webBrCl.SetUrl("http://localhost:8080/litecart/admin/?app=countries&doc=countries");
+            webBrCl.SetUrl("http://localhost:8080/litecart/admin/?app=countries&doc=edit_country");
             
         }
 
@@ -39,18 +39,27 @@ namespace TFOS
         {
             int i = 0;
             string[] baseHandles = { driver.CurrentWindowHandle };
-            foreach (var link in linkArr)
-            {
-                link.Click();
-                var href = link.GetAttribute("href");
-                var newTab = driver.WindowHandles.Except(baseHandles);
-                driver.SwitchTo().Window(newTab.First());
-                if (href != driver.Url)
+            
+                foreach (var link in linkArr)
                 {
-                    //dictErr.Add(driver.Url, link.GetAttribute("href"));
-                    sbIsError.Append(i++ +") " + href + " - " + driver.Url);
+                
+                    var href = link.GetAttribute("href");
+                    link.Click();
+                    var newTab = driver.WindowHandles.Except(baseHandles);
+                    driver.SwitchTo().Window(newTab.First());
+                    if (href != driver.Url)
+                    {
+                        //dictErr.Add(driver.Url, link.GetAttribute("href"));
+                        sbIsError.AppendLine(i++ + ") " + href + " - " + driver.Url);
+                    }
+                    driver.SwitchTo().Window(driver.CurrentWindowHandle).Close();
+                    driver.SwitchTo().Window(baseHandles[0]);
                 }
-            }
+            
+            
+            
+            
+            
         }
     }
 }

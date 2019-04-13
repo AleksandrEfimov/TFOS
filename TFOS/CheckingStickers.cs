@@ -15,31 +15,27 @@ namespace TFOS
     {
         // private?
         public WebBrowserClient webBrCl = new WebBrowserClient();
+        IWebDriver wd;
         
 
         public CheckingStickers(string str)
         {
-            this.webBrCl.SetUrl(str);
+            webBrCl.SetUrl(str);
+            wd = webBrCl.driver;
         }
            
         // находим все товары
-        public void FindAllProducts()
+        public bool IsAllProductHaveSticker()
         {
-            var products = webBrCl.driver.FindElements(By.ClassName("product"));
-
-            IList<IWebElement> stickers;
-            int i = 0;
-
-
+            // var products = webBrCl.driver.FindElements(By.ClassName("product"));
+            var products = wd.FindElements(By.CssSelector(".product.column.shadow.hover-light"));
+            
             foreach (var prd in products)
             {
-                stickers = prd.FindElements(By.ClassName("sticker"));
-                    if (stickers.Count>0)
-                        i++;
+                if (prd.FindElements(By.CssSelector(".sticker")).Count == 0)
+                    return false;
             }
-            
-            MessageBox.Show("Product number is: " + products.Count + " ; and stickers number is: " + i+" ;");
-            
+            return true;
         }
 
         //~CheckingStickers()

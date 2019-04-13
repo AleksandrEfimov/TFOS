@@ -54,9 +54,8 @@ namespace TFOS
         {
             // переход к товарам
             CheckingStickers SCheck = new CheckingStickers("http://localhost:8080/litecart/");
-            SCheck.FindAllProducts();
+            MessageBox.Show("Assert all products have sticker is: " + SCheck.IsAllProductHaveSticker());
             SCheck.webBrCl.Close();
-
         }
 
 

@@ -13,10 +13,10 @@ using System.Windows.Forms;
 
 namespace TFOS
 {
-    public class WebBrowserClient
+    public partial class WebBrowserClient
     {
-        protected internal IWebDriver driver;
-
+        public IWebDriver driver;
+        
         int delay = 15;
         WebDriverWait wait;
 
@@ -30,6 +30,8 @@ namespace TFOS
 
         }
 
+        
+
         public WebBrowserClient(int _delay)
         {
             driver = new ChromeDriver();
@@ -38,36 +40,17 @@ namespace TFOS
             //driver.Url = "http://yandex.ru";
         }
 
-
+        
         public void SetUrl(string str)
         {
             driver.Url = $"{str}";
         }
 
 
-        // логин в админ панель
-        public void logInAdmin()
-        {
-            try
-            {
-                // заходим на страничку
-                driver.Url = "http://localhost:8080/litecart/admin/";
-                // логин
-                IWebElement element = wait.Until(d => d.FindElement(By.Name("username")));
-                driver.FindElement(By.Name("username")).SendKeys("admin");
-                // пароль
-                //// в поисках ошибки применён xPath - не помог, но работает.
-                driver.FindElement(By.XPath("//*[@id=\"box-login\"]/form/div[1]/table/tbody/tr[2]/td[2]/span/input")).SendKeys("admin");
-                //// данному логину необходим был Клик, в то время как Гугл требовал сабмит
-                driver.FindElement(By.Name("login")).Click();
-
-                var login = wait.Until(ExpectedConditions.ElementExists(By.Id("widget-stats")));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Check the site. Admin."+ex);
-            }
-        }
+        
+        
+        
+        
 
         public void ToCatalog()
         {

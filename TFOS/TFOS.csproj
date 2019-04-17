@@ -74,6 +74,7 @@
     <Compile Include="FormAttributeComparator.Designer.cs">
       <DependentUpon>FormAttributeComparator.cs</DependentUpon>
     </Compile>
+    <Compile Include="LogInAdmin.cs" />
     <Compile Include="Products.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

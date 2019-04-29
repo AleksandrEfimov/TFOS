@@ -54,7 +54,7 @@ namespace TFOS
                             }
                         // готовим переход к следующему пункту меню
                         i++;
-                        //refresh
+                        
                         if (i < countMenuItem)
                             {
                                 menuItem = driver.FindElements(By.CssSelector("#app-"));

@@ -13,7 +13,7 @@ namespace TFOS
 {
     class CheckingStickers 
     {
-        // private?
+        
         public WebBrowserClient webBrCl = new WebBrowserClient();
         IWebDriver wd;
         
@@ -27,8 +27,8 @@ namespace TFOS
         // находим все товары
         public bool IsAllProductHaveSticker()
         {
-            // var products = webBrCl.driver.FindElements(By.ClassName("product"));
-            var products = wd.FindElements(By.CssSelector(".product.column.shadow.hover-light"));
+            
+            var products = wd.FindElements(By.CssSelector(".product"));
             
             foreach (var prd in products)
             {
@@ -37,15 +37,5 @@ namespace TFOS
             }
             return true;
         }
-
-        //~CheckingStickers()
-        //{
-        //    webBrCl.Close();
-        //}
-
-        
-
-
-
     }
 }

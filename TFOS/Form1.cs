@@ -23,26 +23,9 @@ namespace TFOS
             InitializeComponent();
         }
 
-        // логин в админ панель
-        //void logInAdmin(ref IWebDriver driver, ref WebDriverWait wait)
-        //{
-        //    // заходим на страничку
-        //    driver.Url = "http://localhost:8080/litecart/admin/";
-        //    // логин
-        //    IWebElement element = wait.Until(d => d.FindElement(By.Name("username")));
-        //    driver.FindElement(By.Name("username")).SendKeys("admin");
-        //    // пароль
-        //    //// в поисках ошибки применён xPath - не помог, но работает.
-        //    driver.FindElement(By.XPath("//*[@id=\"box-login\"]/form/div[1]/table/tbody/tr[2]/td[2]/span/input")).SendKeys("admin");
-        //    //// данному логину необходим был Клик, в то время как Гугл требовал сабмит
-        //    driver.FindElement(By.Name("login")).Click();
-        //}
-
-        
-
 
         // Проход по меню админки
-        private void button1_Click(object sender, EventArgs e)
+        private void btnCheckingAdminMenu(object sender, EventArgs e)
         {
             CheckingAdminMenu ChAdmMenu = new CheckingAdminMenu("http://localhost:8080/litecart/");
             ChAdmMenu.CheckMenu();
@@ -142,5 +125,6 @@ namespace TFOS
             );
             checkNewWindow.webBrCl.Close();
         }
+
     }
 }

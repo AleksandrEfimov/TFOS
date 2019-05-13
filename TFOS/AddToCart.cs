@@ -94,7 +94,25 @@ namespace TFOS
             else return false;
         }
 
+        public void OutOfCart()
+        {
+            
+            try
+            {
+                driver.FindElement(By.Id("cart")).Click();
+                driver.FindElement(By.CssSelector("li.shortcut")).Click();
+                do
+                {
+                    driver.FindElements(By.Name("remove_cart_item"))[0].Click();
 
+                } while (driver.FindElements(By.Id("box-checkout-customer")).Count() > 0);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            Thread.Sleep(5000);
+        }
 
         ~WorkWithCart()
         {

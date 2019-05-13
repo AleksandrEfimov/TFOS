@@ -12,17 +12,20 @@ namespace TFOS
     {
         public WebBrowserClient webBrCl = new WebBrowserClient();
         IWebDriver driver;
-        Random rnd = new Random();
+        Random _rnd = new Random();
+        string emailAddress;
+        string passwordValue = "1";
         public UserAction(string seturl)
         {
             driver = webBrCl.driver;
             driver.Url = seturl;
+            emailAddress = "email" + _rnd.Next(DateTime.Now.Year).ToString() + "@ru.ru";
         }
 
         public string SignUp()
         {
             driver.Url = "http://localhost:8080/litecart/en/create_account";
-            var _rnd = rnd.Next(DateTime.Now.Year).ToString();
+            
             try
             {
 
@@ -53,7 +56,7 @@ namespace TFOS
 
                 //zone_code = SignUpForm.FindElement(By.CssSelector("td:nth-child(2) > select"));
                 var email = driver.FindElement(By.Name("email"));
-                email.SendKeys("email" + _rnd + "@ru.ru");
+                email.SendKeys(emailAddress);
                 var selectZone = new SelectElement(zone_code);
                 //selectZone.SelectByText("Alaska");
                 var zoneCodeVisible = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("select > option:nth-child(2)")));
@@ -66,17 +69,15 @@ namespace TFOS
                 if(newsletterSubsc.Selected == true)
                     newsletterSubsc.Click();
                 var password = driver.FindElement(By.Name("password"));
-                password.SendKeys("1");
+                password.SendKeys(passwordValue);
                 var confirmed_password = driver.FindElement(By.Name("confirmed_password"));
                 confirmed_password.SendKeys("1");
                 var btnCreateAcc = driver.FindElement(By.Name("create_account"));
                 btnCreateAcc.Click(); //Submit();
+
                 var boxAcc = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("box-account")));
                 
-                var logout = boxAcc.FindElement(By.LinkText("Logout"));
-                logout.Click();
-
-                return "Create account successfuul!";
+                return $"Create account email: {emailAddress}, password: {passwordValue} -Success!";
             }
             catch (Exception ex)
             {
@@ -84,7 +85,23 @@ namespace TFOS
             }
 
         }
+        public string SignOut()
+        {
+            driver.FindElement(By.CssSelector("#box-account li:nth-child(4) a")).Click();
+            return (driver.FindElements(By.CssSelector("#box-account li:nth-child(4) a")).Count() == 0) ?
+                "SignOut -Success" : "SignOut -Unsuccess"; 
+        }
 
-        
+        public string SignIn()
+        {
+            driver.FindElement(By.Name("email")).SendKeys(emailAddress);
+            driver.FindElement(By.Name("password")).SendKeys(passwordValue);
+            driver.FindElement(By.Name("login")).Click();
+            return (driver.FindElements(By.CssSelector("#box-account li:nth-child(4) a")).Count() > 0) ?
+                "Second SignIn - Success" : "Second SignIn - Unsuccess";
+        }
+
+
+
     }
 }

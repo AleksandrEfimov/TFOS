@@ -87,9 +87,12 @@ namespace TFOS
         private void button6_Click(object sender, EventArgs e)
         {
             UserAction uAc = new UserAction("http://localhost:8080/litecart/en/");
-            MessageBox.Show("Result operation: " + uAc.SignUp().ToString());
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(uAc.SignUp());
+            sb.AppendLine(uAc.SignOut());
+            sb.AppendLine(uAc.SignIn());
+            MessageBox.Show(@"TestResult: \\n" + sb );
             uAc.webBrCl.Close();
-
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -106,11 +109,8 @@ namespace TFOS
         private void button8_Click(object sender, EventArgs e)
         {
             WorkWithCart workWithCart = new WorkWithCart();
-            MessageBox.Show( 
-                workWithCart.AddToCart(3)
-                ? "Добавлено 3 уточки" 
-                : "Не все утки долетели до корзины"
-                );
+            workWithCart.AddToCart(3);
+            workWithCart.OutOfCart();
             workWithCart.webBrCl.Close();
         }
 

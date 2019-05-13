@@ -82,6 +82,7 @@ namespace TFOS
         public Properties GetPropertiesMainPage(string seturl)
         {
             driver.Url = seturl;
+            
             var data = driver.FindElements(By.CssSelector("#box-campaigns li"));
 
             prop = new Properties();

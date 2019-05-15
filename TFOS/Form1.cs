@@ -126,5 +126,12 @@ namespace TFOS
             checkNewWindow.webBrCl.Close();
         }
 
+        private void ReapLogs_Click(object sender, EventArgs e)
+        {
+            ReaperForLogs reaper = new ReaperForLogs();
+            string str = reaper.TimeToReapLogs().ToString();
+            MessageBox.Show(str);
+            
+        }
     }
 }

@@ -60,8 +60,7 @@ namespace TFOS
 
         public void Close()
         {
-            driver.Close();
-            driver.Quit();
+            driver?.Quit();
             driver = null;
         }
         public void ToMain()

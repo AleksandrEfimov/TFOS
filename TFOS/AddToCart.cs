@@ -47,7 +47,7 @@ namespace TFOS
         public WorkWithCart()
         {
             driver = webBrCl.driver;
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             js = (IJavaScriptExecutor)driver;
         }
 
@@ -94,24 +94,31 @@ namespace TFOS
             else return false;
         }
 
+        IList<IWebElement> itemsINTable => driver.FindElements(By.CssSelector("table.dataTable tr td.item")); 
+
         public void OutOfCart()
         {
+            driver.FindElement(By.Id("cart")).Click();
+            
+            driver.FindElements(By.CssSelector("li.shortcut"))[0].Click();
+            
+            int startItemsCount = itemsINTable.Count();
             
             try
             {
-                driver.FindElement(By.Id("cart")).Click();
-                driver.FindElement(By.CssSelector("li.shortcut")).Click();
                 do
                 {
                     driver.FindElements(By.Name("remove_cart_item"))[0].Click();
+                    startItemsCount--;
+                    wait.Until(driver => itemsINTable.Count.Equals(startItemsCount));
 
-                } while (driver.FindElements(By.Id("box-checkout-customer")).Count() > 0);
+                } while (itemsINTable.Count != 0);
             }
+
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(DateTime.Now+" - " + e.ToString());
             }
-            Thread.Sleep(5000);
         }
 
         ~WorkWithCart()

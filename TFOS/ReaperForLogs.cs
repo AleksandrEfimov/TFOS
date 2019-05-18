@@ -34,7 +34,7 @@ namespace TFOS
             webCl.logInAdmin();
             driver.Url = "http://localhost:8080/litecart/admin/?app=catalog&doc=catalog&category_id=1)";
 
-            for (int i = 5; i < 10; i++)
+            for (int i = 5; i < 12; i++)
             {
                 driver.FindElement(By.CssSelector($"form[name=catalog_form] table.dataTable tr:nth-child({i}) td a")).Click();
                 driver.Navigate().Back();
